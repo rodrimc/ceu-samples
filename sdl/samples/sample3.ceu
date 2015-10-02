@@ -1,0 +1,73 @@
+#include "sdl.ceu"
+#include "my_types.ceu"
+
+var int w_width = 640;
+var int w_height = 480;
+
+var int button_width = 190;
+var int button_height = 60;
+
+var int bulb_width = 138;
+var int bulb_height = 224;
+
+var _SDL_Window&? win;
+    finalize
+        win = &_SDL_CreateWindow("(3) Hello World!",
+                _SDL_WINDOWPOS_UNDEFINED, _SDL_WINDOWPOS_UNDEFINED,
+                w_width, w_height, _SDL_WINDOW_SHOWN); 
+    with
+        _SDL_DestroyWindow(&&win!);
+    end
+
+var _SDL_Renderer&? renderer;
+    finalize
+        renderer = &_SDL_CreateRenderer(&&win!, -1, 0);
+    with
+        _SDL_DestroyRenderer(&&renderer!);
+    end
+
+
+var SDL_Rect screen = SDL_Rect (0, 0, w_width, w_height);
+var SDL_Rect button_rect = SDL_Rect (w_width/2 - button_width/2, 
+                                     w_height/2 + button_height,
+                                     button_width, button_height);
+
+var SDL_Rect bulb_rect = SDL_Rect (w_width/2 - bulb_width/2, 
+                                   w_height/2 - bulb_height,
+                                   bulb_width, bulb_height);
+
+_IMG_Init (_IMG_INIT_PNG);
+
+par/or do
+  await SDL_QUIT;
+with
+  every SDL_REDRAW do 
+    _SDL_SetRenderDrawColor (&&renderer!, 0x00, 0x00, 0x00, 0xFF); 
+    _SDL_RenderFillRect (&&renderer!, (_SDL_Rect&&) &&screen); 
+  end 
+with
+  var Button button with
+    this.ren   = &renderer!;
+    this.rect  = &button_rect;
+    this.on    = false;
+  end;
+  
+  var Bulb bulb with
+    this.ren  = &renderer!;
+    this.rect = &bulb_rect;
+    this.on   = false;
+  end;
+
+  loop do
+    var bool is_on = await button.is_on;
+    
+    bulb.on = is_on;
+  end
+
+with
+  every SDL_REDRAW do
+    _SDL_RenderPresent (&&renderer!);
+  end
+end
+
+escape 0;

@@ -1,0 +1,110 @@
+#include "sdl.ceu"
+
+class Button with
+  var _SDL_Renderer&  ren;
+  var SDL_Rect&       rect;
+  var bool            on;
+
+  event bool is_on;   
+do
+  var _SDL_Surface&? sur_normal;
+    finalize
+      sur_normal = & _IMG_Load ("samples/imgs/normal.png");
+    with
+      _SDL_FreeSurface (&&sur_normal!);
+    end
+  
+  var _SDL_Texture&? tex_normal;
+    finalize
+      tex_normal = &_SDL_CreateTextureFromSurface (&&ren, &&sur_normal!);
+    with
+      _SDL_DestroyTexture (&&tex_normal!);
+    end
+
+  var _SDL_Surface&? sur_pressed;
+    finalize
+      sur_pressed = & _IMG_Load ("samples/imgs/pressed.png");
+    with
+      _SDL_FreeSurface (&&sur_pressed!);
+    end
+  
+  var _SDL_Texture&? tex_pressed;
+    finalize
+      tex_pressed = &_SDL_CreateTextureFromSurface (&&ren, &&sur_pressed!);
+    with
+      _SDL_DestroyTexture (&&tex_pressed!);
+    end
+
+  par/or do
+    await SDL_QUIT;
+  with
+    loop do
+      var _SDL_MouseButtonEvent&& but = await SDL_MOUSEBUTTONDOWN;
+      if but:button == _SDL_BUTTON_LEFT  then
+        if but:x >= rect.x and but:y >= rect.y and 
+           but:x <= (rect.x + rect.w) and but:y <= (rect.y + rect.h) then
+
+           on = not on;
+
+           emit is_on => on;
+        end
+      end
+    end
+  with
+    every SDL_REDRAW do
+      if on then
+        _SDL_RenderCopy (&&ren, &&tex_pressed!, null, (_SDL_Rect&&)&&rect );
+      else
+        _SDL_RenderCopy (&&ren, &&tex_normal!, null, (_SDL_Rect&&)&&rect );
+      end
+    end
+  end
+end
+
+
+class Bulb  with
+  var _SDL_Renderer&  ren;
+  var SDL_Rect&       rect;
+  var bool            on;
+
+do
+  var _SDL_Surface&? sur_off;
+    finalize
+      sur_off = & _IMG_Load ("samples/imgs/off.png");
+    with
+      _SDL_FreeSurface (&&sur_off!);
+    end
+  
+  var _SDL_Texture&? tex_off;
+    finalize
+      tex_off = &_SDL_CreateTextureFromSurface (&&ren, &&sur_off!);
+    with
+      _SDL_DestroyTexture (&&tex_off!);
+    end
+
+  var _SDL_Surface&? sur_on;
+    finalize
+      sur_on = & _IMG_Load ("samples/imgs/on.png");
+    with
+      _SDL_FreeSurface (&&sur_on!);
+    end
+  
+  var _SDL_Texture&? tex_on;
+    finalize
+      tex_on = &_SDL_CreateTextureFromSurface (&&ren, &&sur_on!);
+    with
+      _SDL_DestroyTexture (&&tex_on!);
+    end
+
+  par/or do
+    await SDL_QUIT;
+  with
+    every SDL_REDRAW do
+      if on then
+        _SDL_RenderCopy (&&ren, &&tex_on!, null, (_SDL_Rect&&)&&rect );
+      else
+        _SDL_RenderCopy (&&ren, &&tex_off!, null, (_SDL_Rect&&)&&rect );
+      end
+    end
+  end
+end

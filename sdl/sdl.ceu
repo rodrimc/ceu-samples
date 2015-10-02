@@ -1,0 +1,36 @@
+#ifndef SDL_CEU
+#define SDL_CEU
+
+input void SDL_QUIT;
+input void SDL_REDRAW;
+input _SDL_MouseButtonEvent&& SDL_MOUSEBUTTONDOWN;
+
+native @plain _SDL_Rect, _SDL_Point, _SDL_Color,
+              _SDL_MouseButtonEvent,
+              _SDL_Renderer,
+              _SDL_TouchFingerEvent,
+              _SDL_Texture,
+              _SDL_Surface;
+
+native @nohold _SDL_DestroyWindow (),
+               _SDL_DestroyRenderer (),
+               _SDL_CreateRenderer (),
+               _SDL_SetRenderDrawColor(),
+               _SDL_RenderFillRect (),
+               _SDL_GetWindowSize (),
+               _SDL_CreateTextureFromSurface(),
+               _SDL_RenderPresent(),
+               _SDL_FreeSurface(),
+               _SDL_DestroyTexture(),
+               _SDL_RenderClear (),
+               _SDL_RenderCopy (),
+               _IMG_Load ();
+
+data SDL_Rect with
+    var int x;
+    var int y;
+    var int w;
+    var int h;
+end
+
+#endif

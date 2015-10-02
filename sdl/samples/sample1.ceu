@@ -1,0 +1,11 @@
+
+par/or do
+  await 10s;
+with
+  loop do
+    _printf ("Hello World\n");
+    await 1s;
+  end
+end
+
+escape 0;

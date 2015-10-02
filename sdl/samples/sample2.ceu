@@ -1,0 +1,74 @@
+#include "sdl.ceu"
+
+input void SDL_QUIT;
+input void SDL_REDRAW;
+input _SDL_MouseButtonEvent&& SDL_MOUSEBUTTONDOWN;
+
+var int w_width = 640;
+var int w_height = 480;
+
+var int rect_width = 100;
+var int rect_height = 100;
+
+var _SDL_Window&? win;
+    finalize
+        win = &_SDL_CreateWindow("(1) Hello World!",
+                _SDL_WINDOWPOS_UNDEFINED, _SDL_WINDOWPOS_UNDEFINED,
+                w_width, w_height, _SDL_WINDOW_SHOWN); 
+    with
+        _SDL_DestroyWindow(&&win!);
+    end
+
+var _SDL_Renderer&? renderer;
+    finalize
+        renderer = &_SDL_CreateRenderer(&&win!, -1, 0);
+    with
+        _SDL_DestroyRenderer(&&renderer!);
+    end
+
+var SDL_Rect screen = SDL_Rect (0, 0, w_width, w_height);
+var SDL_Rect rect = SDL_Rect (w_width/2 - rect_width/2, 
+                              w_height/2 - rect_height/2,
+                              rect_width, rect_height);
+
+var bool on = false;
+
+par/or do
+  await SDL_QUIT;
+with
+  await 5s;
+  on = true;
+  await FOREVER;
+with
+  every SDL_REDRAW do 
+    _SDL_SetRenderDrawColor (&&renderer!, 0x00, 0x00, 0x00, 0xFF); 
+    _SDL_RenderFillRect (&&renderer!, (_SDL_Rect&&) &&screen); 
+
+    if on then
+      _SDL_SetRenderDrawColor (&&renderer!, 0xFF, 0xFF, 0xFF, 0xFF);
+      _SDL_RenderFillRect (&&renderer!, (_SDL_Rect&&) &&rect);
+    end
+
+  end 
+with
+  loop do
+    var _SDL_MouseButtonEvent&& but = await SDL_MOUSEBUTTONDOWN;
+    if but:button == _SDL_BUTTON_LEFT and on then
+      if but:x >= rect.x and but:y >= rect.y and 
+         but:x <= (rect.x + rect.w) and but:y <= (rect.y + rect.h) then
+
+         on = false;
+        _printf ("click\n");
+        break;
+      end
+    end
+  end
+  await FOREVER;
+with
+  every SDL_REDRAW do
+    _SDL_RenderPresent (&&renderer!);
+  end
+end
+
+escape 0;
+
