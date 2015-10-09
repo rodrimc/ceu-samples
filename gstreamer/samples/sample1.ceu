@@ -1,0 +1,29 @@
+input _MbMediaEvent&& MB_REMOVED;
+
+native @nohold _printf ();
+native @nohold _mb_media_free (), \
+               _mb_media_start ();
+
+var int width = 640;
+var int height = 480;
+
+var int ret = _mb_init_args (width, height);
+
+if ret == -1 then
+  _printf ("Something is wrong\n");
+else
+  var _MbMedia&? video;
+  finalize
+    video = & _mb_media_new ("video", 
+          "file:///media/rodrigocosta/Data/primeirojoao/media/animGar.mp4", 
+          0, 0, 1, width, height);
+  with
+    _mb_media_free (&&video!);
+  end
+  _mb_media_start (&&video!);
+  
+  var _MbMediaEvent &&mb_event = await MB_REMOVED;
+  _printf ("Ceu: %s has been removed\n", mb_event:media:name);
+
+end
+escape 0;
