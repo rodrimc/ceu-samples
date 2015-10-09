@@ -14,7 +14,8 @@ if ret == -1 then
 else
   var _MbMedia&? video;
   finalize
-    video = & _mb_media_new ("video", 
+    video = & _mb_media_new ("video",
+          //one should change the path below
           "file:///media/rodrigocosta/Data/primeirojoao/media/animGar.mp4", 
           0, 0, 1, width, height);
   with
@@ -26,4 +27,5 @@ else
   _printf ("Ceu: %s has been removed\n", mb_event:media:name);
 
 end
+
 escape 0;
