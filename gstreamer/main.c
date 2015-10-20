@@ -31,57 +31,109 @@ void ceu_sys_log (int mode, long s) {
 
 #include "_ceu_app.c"
 
-#ifndef CEU_IN_MB_BEGIN
-  #define CEU_IN_MB_BEGIN 0xFFFFFFC
-#endif
-
-#ifndef CEU_IN_MB_PAUSE
-  #define CEU_IN_MB_PAUSE 0xFFFFFD
-#endif
-
-#ifndef CEU_IN_MB_END
-  #define CEU_IN_MB_END 0xFFFFFE
-#endif
-
-#ifndef CEU_IN_MB_REMOVED
-  #define CEU_IN_MB_REMOVED 0xFFFFFF
-#endif
-
 #define CEU_OUT_EVT (PARAM)
 
 static char CEU_DATA[sizeof(CEU_Main)];
 static tceu_app app;
 
-void handler (MbMediaEvent *evt)
+void handler (MbEvent *evt)
 {
-  switch (evt->evt)
+  switch (evt->type)
 	{
+#ifdef CEU_IN_MB_APP_INIT_DONE
+		case MB_APP_INIT_DONE:
+		{
+			g_debug ("MB_APP_INIT_DONE received.\n");
+      ceu_sys_go(&app, CEU_IN_MB_APP_INIT_DONE, &evt);
+			break;
+		}
+#endif
+#ifdef CEU_IN_MB_BEGIN
 		case MB_BEGIN:
 		{
-			g_print ("%s has started.\n", evt->media->name);
+			g_debug ("%s has started.\n", evt->state_change.media_name);
       ceu_sys_go(&app, CEU_IN_MB_BEGIN, &evt);
 			break;
 		}
+#endif
+#ifdef CEU_IN_MB_PAUSE
 		case MB_PAUSE:
 		{
-			g_print ("%s has paused.\n", evt->media->name);
+			g_debug ("%s has paused.\n", evt->state_change.media_name);
       ceu_sys_go(&app, CEU_IN_MB_PAUSE, &evt);
 			break;
 		}
+#endif
+#ifdef CEU_IN_MB_END
 		case MB_END:
 		{
-			g_print ("%s has ended.\n", evt->media->name);
+			g_debug ("%s has ended.\n", evt->state_change.media_name);
       ceu_sys_go(&app, CEU_IN_MB_END, &evt);
 			break;
 		}
+#endif
+#ifdef CEU_IN_MB_REMOVED
 		case MB_REMOVED:
 		{
-			g_print ("%s has been removed from pipeline.\n", evt->media->name);
+			g_debug ("%s has been removed from pipeline.\n", 
+          evt->state_change.media_name);
       ceu_sys_go(&app, CEU_IN_MB_REMOVED, &evt);
 			break;
 		}
-		default:
-			g_printerr ("Unknown event received!\n");
+#endif
+#ifdef CEU_IN_MB_MOUSE_BUTTON_PRESS
+		case MB_MOUSE_BUTTON_PRESS:
+		{
+			g_debug ("%d  button has been pressed on (%d, %d).\n", 
+          evt->mouse_button.button, evt->mouse_button.x, evt->mouse_button.y);
+      ceu_sys_go(&app, CEU_IN_MB_MOUSE_BUTTON_PRESS, &evt);
+			break;
+		}
+#endif
+#ifdef CEU_IN_MB_MOUSE_BUTTON_RELEASE
+		case MB_MOUSE_BUTTON_RELEASE:
+		{
+			g_debug ("%d button has been released on (%d, %d).\n", 
+          evt->mouse_button.button, evt->mouse_button.x, evt->mouse_button.y);
+      ceu_sys_go(&app, CEU_IN_MB_MOUSE_BUTTON_PRESS, &evt);
+			break;
+		}
+#endif
+#ifdef CEU_IN_MB_MOUSE_MOVE
+		case MB_MOUSE_MOVE:
+		{
+			g_debug ("mouse position: (%d, %d)\n", evt->mouse_move.x, 
+          evt->mouse_move.y);
+      ceu_sys_go(&app, CEU_IN_MB_MOUSE_MOVE, &evt);
+			break;
+		}
+#endif
+#ifdef CEU_IN_MB_KEY_PRESS
+		case MB_KEY_PRESS:
+		{
+			g_debug ("key pressed: %s\n", evt->keyboard.key);
+      ceu_sys_go(&app, CEU_IN_MB_KEY_PRESS, &evt);
+			break;
+		}
+#endif
+#ifdef CEU_IN_MB_KEY_RELEASE
+		case MB_KEY_RELEASE:
+		{
+			g_debug ("key released: %s\n", evt->keyboard.key);
+      ceu_sys_go(&app, CEU_IN_MB_KEY_RELEASE, &evt);
+			break;
+		}
+#endif
+#ifdef CEU_IN_MB_MEDIA_SELECTION
+		case MB_MEDIA_SELECTION:
+		{
+			g_debug ("media selected: %s\n", evt->selection.media_name);
+      ceu_sys_go(&app, CEU_IN_MB_MEDIA_SELECTION, &evt);
+			break;
+		}
+#endif
+    default:
+			g_debug ("Unknown event received!\n");
 	}
 }
 
