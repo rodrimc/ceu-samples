@@ -1,0 +1,39 @@
+input _MbEvent&& MB_APP_INIT_DONE;
+input _MbEvent&& MB_REMOVED;
+input _MbEvent&& MB_MEDIA_SELECTION;
+
+
+native @nohold _printf ();
+native @nohold _mb_media_free (), \
+               _mb_media_start (), \
+               _mb_media_stop ();
+
+#define FALSE 0
+
+var int width = 640;
+var int height = 480;
+
+_mb_init_args (width, height, FALSE);
+await MB_APP_INIT_DONE;
+
+par/or do
+  var _MbMedia&? video;
+  finalize
+    video = & _mb_media_new ("video",
+          //one should change the path below
+          "file:///media/rodrigocosta/Data/primeirojoao/media/animGar.mp4", 
+          0, 0, 1, width, height);
+  with
+    _mb_media_free (&&video!);
+  end
+  _mb_media_start (&&video!);
+  
+  await MB_MEDIA_SELECTION;
+  
+  _mb_media_stop (&&video!);
+  await MB_REMOVED;
+with
+  await MB_REMOVED;
+end
+
+escape 0;

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <assert.h>
 #include <inttypes.h>
 #include <time.h>
@@ -144,7 +145,7 @@ int main (int argc, char* arg[])
   
   //s32 DT;
 #ifdef CEU_WCLOCKS
-  DT = CEU_WCLOCK_INACTIVE;
+  //DT = CEU_WCLOCK_INACTIVE;
 #endif
 
   app.data = (tceu_org*) &CEU_DATA;
