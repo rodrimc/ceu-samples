@@ -53,22 +53,26 @@ void handler (MbEvent *evt)
 		case MB_BEGIN:
 		{
 			g_debug ("%s has started.\n", evt->state_change.media_name);
+      printf ("C   (MB_BEGIN): %p\n", evt);
+      printf ("C   (EVBUF): %p\n", &evt);
       ceu_sys_go(&app, CEU_IN_MB_BEGIN, &evt);
 			break;
 		}
 #endif
-#ifdef CEU_IN_MB_PAUSE
+/*#ifdef CEU_IN_MB_PAUSE
 		case MB_PAUSE:
 		{
 			g_debug ("%s has paused.\n", evt->state_change.media_name);
       ceu_sys_go(&app, CEU_IN_MB_PAUSE, &evt);
 			break;
 		}
-#endif
+#endif */
 #ifdef CEU_IN_MB_END
 		case MB_END:
 		{
 			g_debug ("%s has ended.\n", evt->state_change.media_name);
+      printf ("C   (MB_END): %p\n", evt);
+      printf ("C   (EVBUF): %p\n", &evt);
       ceu_sys_go(&app, CEU_IN_MB_END, &evt);
 			break;
 		}
@@ -82,7 +86,7 @@ void handler (MbEvent *evt)
 			break;
 		}
 #endif
-#ifdef CEU_IN_MB_MOUSE_BUTTON_PRESS
+/*#ifdef CEU_IN_MB_MOUSE_BUTTON_PRESS
 		case MB_MOUSE_BUTTON_PRESS:
 		{
 			g_debug ("%d  button has been pressed on (%d, %d).\n", 
@@ -133,6 +137,7 @@ void handler (MbEvent *evt)
 			break;
 		}
 #endif
+*/
     default:
 			g_debug ("Unknown event received!\n");
 	}
@@ -141,7 +146,7 @@ void handler (MbEvent *evt)
 int main (int argc, char* arg[])
 {
   struct timespec ts_old;
-  uint64_t count = 0;
+  uint64_t last_time = 0;
   
   //s32 DT;
 #ifdef CEU_WCLOCKS
@@ -160,18 +165,27 @@ int main (int argc, char* arg[])
   while(app.isAlive) 
   {
     struct timespec ts_now;
-    s32 dt;
+    uint64_t dt;
     do
     {
-      clock_gettime(CLOCK_REALTIME, &ts_now);
-      dt = (ts_now.tv_sec  - ts_old.tv_sec)*1000000 +
-        (ts_now.tv_nsec - ts_old.tv_nsec)/1000;
+      if (mb_is_initialized ())
+      {
+        if (last_time == 0)
+          last_time = mb_get_time ();
+
+        dt = (mb_get_time() - last_time)/1000;
+      }
+      else
+      {
+        clock_gettime(CLOCK_REALTIME, &ts_now);
+        dt = (ts_now.tv_sec  - ts_old.tv_sec)*1000000 +
+          (ts_now.tv_nsec - ts_old.tv_nsec)/1000;
+      }
     }
     while (dt == 0);
     
     ts_old = ts_now;
-    count ++;
-    
+    last_time = mb_get_time ();
 #ifdef CEU_WCLOCKS
     ceu_sys_go(&app, CEU_IN__WCLOCK, &dt);
 #endif

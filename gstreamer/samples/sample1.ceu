@@ -1,6 +1,7 @@
 input _MbEvent&& MB_REMOVED;
 input _MbEvent&& MB_END;
 input _MbEvent&& MB_APP_INIT_DONE;
+input _MbEvent&& MB_BEGIN;
 
 native @nohold _printf (),            \
                _strcmp (),            \
@@ -76,23 +77,6 @@ end
 var int count = 0;
 
 par/or do
-  every evt in MB_END do
-    if _strcmp (evt:state_change.media_name, shoes!.name) == 0 then
-      _mb_media_set_pos (&&anim!, 0, 0);
-      _mb_media_set_size (&&anim!, width, height);
-    else/if _strcmp (evt:state_change.media_name, anim!.name) == 0 then
-        _mb_media_stop (&&background!);
-    end
-  end
-with
-  loop do
-     await MB_REMOVED;
-     count = count + 1; 
-     if count == 5 then //# of medias
-       break;
-     end
-  end
-with
   _mb_media_start (&&background!);
   _mb_media_start (&&anim!);
 
@@ -110,6 +94,35 @@ with
   _mb_media_start (&&shoes!);
 
   await FOREVER;
+/*with
+  var _MbEvent&& evt =  await MB_END until 
+    ( _strcmp (evt:state_change.media_name, anim!.name) == 0);
+  _mb_media_stop (&&background!);
+  
+  await FOREVER;
+with
+  loop do
+    var _MbEvent&& evt =  await MB_END;
+      _printf ("CÉU (MB_END): %p\n", evt); 
+      if (_strcmp (evt:state_change.media_name, shoes!.name) == 0) then
+      _mb_media_set_pos (&&anim!, 0, 0);
+      _mb_media_set_size (&&anim!, width, height);
+      break;
+    end
+  end
+  await FOREVER;*/
+with
+  every evt in MB_END do
+    _printf ("CEU (MB_END): %p\n", evt);
+  end
+with
+  every evt in MB_BEGIN do
+    _printf ("CEU (MB_BEGIN): %p\n", evt);
+  end
+with
+  loop i in 5 do
+     await MB_REMOVED;
+  end
 end
 
 escape 0;
