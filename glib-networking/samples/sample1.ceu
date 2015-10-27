@@ -1,0 +1,46 @@
+input (_GSocketService&&,_GSocketConnection&&,_GObject &&,_gpointer) INCOMING;
+
+native do
+  ##include <stdio.h>
+end
+
+#define PORT 1500
+
+native @nohold _printf (), \
+               _gsocket_service_new (), \
+               _g_object_unref (), \
+               _g_socket_listener_add_inet_port (), \
+               _connect_service_signal(), \
+               _g_socket_service_start (), \
+               _G_CALLBACK ();
+
+function (_GSocketService &&service, _GSocketConnection &&connection,
+          _GObject &&source, _gpointer user_data) => _gboolean incoming_cb do
+
+  _printf ("client connected\n");
+end
+
+var _GError&& error;
+var _GSocketService&? service;
+finalize
+  service = &_g_socket_service_new ();
+with
+  _g_object_unref (&&service!); 
+end
+
+_g_socket_listener_add_inet_port ((_GSocketListener&&)&&service!, 1500, 
+                    null, &&error);
+
+if error != null then
+  _printf ("Error: %s\n", error:message);
+  escape 0;
+end
+
+_connect_service_signal (&&service!); 
+
+_g_socket_service_start (&&service!);
+
+loop do
+  await INCOMING;
+  _printf ("client connected\n");
+end
