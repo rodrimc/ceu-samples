@@ -53,26 +53,22 @@ void handler (MbEvent *evt)
 		case MB_BEGIN:
 		{
 			g_debug ("%s has started.\n", evt->state_change.media_name);
-      printf ("C   (MB_BEGIN): %p\n", evt);
-      printf ("C   (EVBUF): %p\n", &evt);
       ceu_sys_go(&app, CEU_IN_MB_BEGIN, &evt);
 			break;
 		}
 #endif
-/*#ifdef CEU_IN_MB_PAUSE
+#ifdef CEU_IN_MB_PAUSE
 		case MB_PAUSE:
 		{
 			g_debug ("%s has paused.\n", evt->state_change.media_name);
       ceu_sys_go(&app, CEU_IN_MB_PAUSE, &evt);
 			break;
 		}
-#endif */
+#endif 
 #ifdef CEU_IN_MB_END
 		case MB_END:
 		{
 			g_debug ("%s has ended.\n", evt->state_change.media_name);
-      printf ("C   (MB_END): %p\n", evt);
-      printf ("C   (EVBUF): %p\n", &evt);
       ceu_sys_go(&app, CEU_IN_MB_END, &evt);
 			break;
 		}
@@ -86,7 +82,7 @@ void handler (MbEvent *evt)
 			break;
 		}
 #endif
-/*#ifdef CEU_IN_MB_MOUSE_BUTTON_PRESS
+#ifdef CEU_IN_MB_MOUSE_BUTTON_PRESS
 		case MB_MOUSE_BUTTON_PRESS:
 		{
 			g_debug ("%d  button has been pressed on (%d, %d).\n", 
@@ -137,7 +133,6 @@ void handler (MbEvent *evt)
 			break;
 		}
 #endif
-*/
     default:
 			g_debug ("Unknown event received!\n");
 	}

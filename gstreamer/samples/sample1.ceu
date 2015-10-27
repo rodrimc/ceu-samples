@@ -28,7 +28,7 @@ var _MbMedia&? shoes;
 finalize
   background = &_mb_media_new ("back",
         //one should change the path below
-        "file:///media/rodrigocosta/Data/primeirojoao/media/background.png", 
+        "file:///media/rodrigocosta/Dados/primeirojoao/media/background.png", 
         0, 0, 0, width, height);
 with
   _mb_media_free (&&background!);
@@ -36,7 +36,7 @@ end
 finalize
   anim = & _mb_media_new ("anim",
         //one should change the path below
-        "file:///media/rodrigocosta/Data/primeirojoao/media/animGar.mp4", 
+        "file:///media/rodrigocosta/Dados/primeirojoao/media/animGar.mp4", 
         0, 0, 1, width, height);
 with
   _mb_media_free (&&anim!);
@@ -44,7 +44,7 @@ end
 finalize
   choro = & _mb_media_new ("choro",
         //one should change the path below
-        "file:///media/rodrigocosta/Data/primeirojoao/media/choro.mp4", 
+        "file:///media/rodrigocosta/Dados/primeirojoao/media/choro.mp4", 
         0, 0, 0, 0, 0);
 with
   _mb_media_free (&&choro!);
@@ -52,7 +52,7 @@ end
 finalize
   drible = & _mb_media_new ("drible",
         //one should change the path below
-        "file:///media/rodrigocosta/Data/primeirojoao/media/drible.mp4", 
+        "file:///media/rodrigocosta/Dados/primeirojoao/media/drible.mp4", 
         width * 0.05, 
         height * 0.067, 
         3, 
@@ -64,7 +64,7 @@ end
 finalize
   shoes = & _mb_media_new ("shoes",
         //one should change the path below
-        "file:///media/rodrigocosta/Data/primeirojoao/media/shoes.mp4", 
+        "file:///media/rodrigocosta/Dados/primeirojoao/media/shoes.mp4", 
          width * 0.15,
          height * 0.60,
          3,
@@ -94,31 +94,19 @@ par/or do
   _mb_media_start (&&shoes!);
 
   await FOREVER;
-/*with
+with
   var _MbEvent&& evt =  await MB_END until 
     ( _strcmp (evt:state_change.media_name, anim!.name) == 0);
   _mb_media_stop (&&background!);
   
   await FOREVER;
 with
-  loop do
-    var _MbEvent&& evt =  await MB_END;
-      _printf ("CÉU (MB_END): %p\n", evt); 
-      if (_strcmp (evt:state_change.media_name, shoes!.name) == 0) then
-      _mb_media_set_pos (&&anim!, 0, 0);
-      _mb_media_set_size (&&anim!, width, height);
-      break;
-    end
-  end
-  await FOREVER;*/
-with
-  every evt in MB_END do
-    _printf ("CEU (MB_END): %p\n", evt);
-  end
-with
-  every evt in MB_BEGIN do
-    _printf ("CEU (MB_BEGIN): %p\n", evt);
-  end
+  var _MbEvent&& evt =  await MB_END until
+    (_strcmp (evt:state_change.media_name, shoes!.name) == 0);
+  
+  _mb_media_set_pos (&&anim!, 0, 0);
+  _mb_media_set_size (&&anim!, width, height);
+  await FOREVER;
 with
   loop i in 5 do
      await MB_REMOVED;
