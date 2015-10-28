@@ -40,7 +40,13 @@ _connect_service_signal (&&service!);
 
 _g_socket_service_start (&&service!);
 
-loop do
-  await INCOMING;
-  _printf ("client connected\n");
+par/or do
+  loop do
+    await INCOMING;
+    _printf ("client connected\n");
+  end
+with
+  await 5s;
 end
+
+escape 0;

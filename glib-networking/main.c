@@ -38,6 +38,8 @@ connect_service_signal(GSocketService *service);
 
 static char CEU_DATA[sizeof(CEU_Main)];
 static tceu_app app;
+static GMainLoop *main_loop;
+static uint64_t old_dt;
 
 typedef struct
 {
@@ -71,29 +73,45 @@ connect_service_signal(GSocketService *service)
       G_CALLBACK (incoming_callback), NULL);
 }
 
-int main (int argc, char* arg[])
+gboolean
+update_ceu_time (gpointer data)
 {
-  uint64_t last_time = g_get_monotonic_time();
-
-  app.data = (tceu_org*) &CEU_DATA;
-  app.init = &ceu_app_init;
-
-  app.init (&app);
-
-  while(app.isAlive) 
+  if (app.isAlive)
   {
-    struct timespec ts_now;
-    uint64_t dt;
-    dt = g_get_monotonic_time () - last_time;
-    last_time += dt;
-
+    uint64_t dt = g_get_monotonic_time () - old_dt;
 #ifdef CEU_WCLOCKS
     ceu_sys_go(&app, CEU_IN__WCLOCK, &dt);
 #endif
 #ifdef CEU_ASYNCS
     ceu_sys_go(&app, CEU_IN__ASYNC, NULL);
 #endif
+    old_dt += dt;
+
+    return G_SOURCE_CONTINUE;
   }
+  else
+  {
+    g_main_loop_quit (main_loop);
+    return G_SOURCE_REMOVE;
+  }
+}
+
+int main (int argc, char* arg[])
+{
+  uint64_t last_time = g_get_monotonic_time();
+  main_loop = g_main_loop_new (NULL, FALSE);
+
+  app.data = (tceu_org*) &CEU_DATA;
+  app.init = &ceu_app_init;
+
+  app.init (&app);
+
+  old_dt = g_get_monotonic_time ();
+
+  g_timeout_add (0.1, update_ceu_time, NULL);
+
+  g_main_loop_run (main_loop);
+  
   printf ("All done\n");
   return app.ret;
 }

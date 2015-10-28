@@ -3,9 +3,10 @@
 
 #include "ceu_types.h"
 
-#define CEU_RET
-#define CEU_EXTS
 #define CEU_GOTO
+#define CEU_EXTS
+#define CEU_RET
+#define CEU_WCLOCKS
 #define CEU_CLEAR
      /* CEU_EXTS, CEU_WCLOCKS, CEU_INTS, ... */
 
@@ -20,7 +21,7 @@ typedef s16 tceu_ncls;
 #endif
 
 /* TODO: remove */
-#define CEU_NTRAILS 2
+#define CEU_NTRAILS 3
 
 #ifndef _CEU_OS_H
 #define _CEU_OS_H
@@ -1636,11 +1637,11 @@ void ceu_pool_free (tceu_pool* pool, byte* val);
 #define CEU_OUT_n 0
       /* CEU_IN_, CEU_OUT_ */
 #define CEU_FUN_connect_service_signal
-#define CEU_FUN_printf
-#define CEU_FUN_g_socket_service_start
-#define CEU_FUN_g_socket_listener_add_inet_port
 #define CEU_FUN_g_object_unref
 #define CEU_FUN_g_socket_service_new
+#define CEU_FUN_g_socket_service_start
+#define CEU_FUN_printf
+#define CEU_FUN_g_socket_listener_add_inet_port
    /* CEU_FUN_ */
 typedef struct {
 	int _1;
@@ -1661,7 +1662,7 @@ typedef struct {
 /* each class may define new native code that appear after its struct declaration */
 
 enum {
-CEU_NONE190,
+CEU_NONE232,
 CEU__OPTION___GSOCKETSERVICE__REF_NIL,
 CEU__OPTION___GSOCKETSERVICE__REF_SOME
 };
@@ -1681,18 +1682,19 @@ typedef struct CEU_Main {
 #ifdef CEU_ORGS
   struct tceu_org org;
 #endif
-  tceu_trl trls_[ 2 ];
+  tceu_trl trls_[ 3 ];
     struct { /* BLOCK ln=1 */
       union {
           union {
           };
         struct { /* BLOCK ln=1 */
+          int _ret_0;
           union {
               struct { /* BLOCK ln=1 */
                 union {
                   union {
                     struct { /* BLOCK ln=1 */
-                    u8 __fin_106_1: 1;
+                    u8 __fin_115_1: 1;
                       GError* error;
                       CEU__Option___GSocketService__ref service;
                       union {
@@ -1722,18 +1724,33 @@ typedef struct CEU_Main {
                               };
                             };
                           } ;
-                        struct { /* BLOCK ln=43 */
-                          union {
+                        struct {
+                          struct { /* BLOCK ln=44 */
                             union {
-                            };
                               struct { /* BLOCK ln=44 */
                                 union {
                                   union {
                                   };
+                                    struct { /* BLOCK ln=45 */
+                                      union {
+                                        union {
+                                        };
+                                      };
+                                    } ;
                                 };
                               } ;
-                          };
-                        } ;
+                            };
+                          } ;
+                          struct { /* BLOCK ln=49 */
+                            union {
+                              union {
+                                  s32 __wclk_107;
+                              };
+                            };
+                          } ;
+                        };
+                        union {
+                        };
                       };
                     } ;
                   };

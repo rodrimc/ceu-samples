@@ -33,9 +33,10 @@ SOFTWARE.
 
 #include "ceu_types.h"
 
-#define CEU_RET
-#define CEU_EXTS
 #define CEU_GOTO
+#define CEU_EXTS
+#define CEU_RET
+#define CEU_WCLOCKS
 #define CEU_CLEAR
      /* CEU_EXTS, CEU_WCLOCKS, CEU_INTS, ... */
 
@@ -50,7 +51,7 @@ typedef s16 tceu_ncls;
 #endif
 
 /* TODO: remove */
-#define CEU_NTRAILS 2
+#define CEU_NTRAILS 3
 
 #ifndef _CEU_OS_H
 #define _CEU_OS_H
@@ -1666,11 +1667,11 @@ void ceu_pool_free (tceu_pool* pool, byte* val);
 #define CEU_OUT_n 0
       /* CEU_IN_, CEU_OUT_ */
 #define CEU_FUN_connect_service_signal
-#define CEU_FUN_printf
-#define CEU_FUN_g_socket_service_start
-#define CEU_FUN_g_socket_listener_add_inet_port
 #define CEU_FUN_g_object_unref
 #define CEU_FUN_g_socket_service_new
+#define CEU_FUN_g_socket_service_start
+#define CEU_FUN_printf
+#define CEU_FUN_g_socket_listener_add_inet_port
    /* CEU_FUN_ */
 typedef struct {
 	int _1;
@@ -1691,7 +1692,7 @@ typedef struct {
 /* each class may define new native code that appear after its struct declaration */
 
 enum {
-CEU_NONE190,
+CEU_NONE232,
 CEU__OPTION___GSOCKETSERVICE__REF_NIL,
 CEU__OPTION___GSOCKETSERVICE__REF_SOME
 };
@@ -1711,18 +1712,19 @@ typedef struct CEU_Main {
 #ifdef CEU_ORGS
   struct tceu_org org;
 #endif
-  tceu_trl trls_[ 2 ];
+  tceu_trl trls_[ 3 ];
     struct { /* BLOCK ln=1 */
       union {
           union {
           };
         struct { /* BLOCK ln=1 */
+          int _ret_0;
           union {
               struct { /* BLOCK ln=1 */
                 union {
                   union {
                     struct { /* BLOCK ln=1 */
-                    u8 __fin_106_1: 1;
+                    u8 __fin_115_1: 1;
                       GError* error;
                       CEU__Option___GSocketService__ref service;
                       union {
@@ -1752,18 +1754,33 @@ typedef struct CEU_Main {
                               };
                             };
                           } ;
-                        struct { /* BLOCK ln=43 */
-                          union {
+                        struct {
+                          struct { /* BLOCK ln=44 */
                             union {
-                            };
                               struct { /* BLOCK ln=44 */
                                 union {
                                   union {
                                   };
+                                    struct { /* BLOCK ln=45 */
+                                      union {
+                                        union {
+                                        };
+                                      };
+                                    } ;
                                 };
                               } ;
-                          };
-                        } ;
+                            };
+                          } ;
+                          struct { /* BLOCK ln=49 */
+                            union {
+                              union {
+                                  s32 __wclk_107;
+                              };
+                            };
+                          } ;
+                        };
+                        union {
+                        };
                       };
                     } ;
                   };
@@ -4647,7 +4664,6 @@ static void ceu_sys_org_free (tceu_app* app, tceu_org* org)
 
 /**********************************************************************/
 
-#ifdef CEU_DEBUG_TRAILS
 #ifdef CEU_STACK
 void ceu_stack_dump (tceu_stk* stk) {
     if (stk == NULL) {
@@ -4658,7 +4674,6 @@ void ceu_stack_dump (tceu_stk* stk) {
     printf("[%p] org=%p trls=[%d,%d]\n",
         stk, stk->org, stk->trl1, stk->trl2);
 }
-#endif
 #endif
 
 #ifdef CEU_ORGS
@@ -4968,33 +4983,27 @@ SPC(2); printf("lbl: %d\n", trl->lbl);
             }
 
             /* traverse all children */
-            while (cur != NULL) {
-                tceu_org* nxt = cur->nxt;
 
-                tceu_stk stk_ = { stk, cur, 0, cur->n, {} };
-                int ret = setjmp(stk_.jmp);
-                if (ret == 0)
-                {
-                    /* normal flow: call cur and proceed to nxt */
+            if (cur != NULL) {
+                tceu_stk stk_ = { stk, org, cur->parent_trl, cur->parent_trl, {} };
+                if (setjmp(stk_.jmp) != 0) {
+                    CEU_JMP_TRL->lbl = CEU_JMP_LBL;
+                    app->code(app, evt, CEU_JMP_ORG, CEU_JMP_TRL, stk, NULL);
+                    return;
+                }
+                /* SETJMP: traversing children
+                 * A child might emit a global event that awakes a par/or 
+                 * enclosing the parent organism with the call point.
+                 */
+                do {
+                    tceu_org* nxt = cur->nxt;
+                        /* save "nxt" before the call, which might kill "cur"
+                         * and reset "nxt" for the freelist */
                     ceu_sys_go_ex(app, evt,
                                   &stk_,
                                   cur, &cur->trls[0], NULL);
-                }
-                else if (ret == 1)
-                {
-                    /* came from clear, so all my brothers are also dead,
-                     * break the loop. before, execute the clear continuation 
-                     */
-                    CEU_JMP_TRL->lbl = CEU_JMP_LBL;
-                    app->code(app, evt, CEU_JMP_ORG, CEU_JMP_TRL, stk, NULL);
-                        /* stk: restore previous (skip &stk_) */
-                    break;
-                }
-                else /* ret == 2 */
-                {
-                    /* came from org natural termination, continue to next */
-                }
-                cur = nxt;
+                    cur = nxt;
+                } while (cur != NULL);
             }
             continue;   /* next trail after handling children */
         }
@@ -6807,10 +6816,14 @@ char* ceu_vector_tochar (tceu_vector* vector) {
 enum {
     Main_Set_out_0 = 0,
     Main_Set_jmp_1 = 1,
-    Main_Awake_INCOMING_2 = 2,
-    Main_Block__fin_3 = 3,
-    Main_Block_jmp_4 = 4,
-    Class_Main = 5,
+    Main_ParOr_sub_1_2 = 2,
+    Main_ParOr_out_3 = 3,
+    Main_ParOr_jmp_4 = 4,
+    Main_Awake_INCOMING_5 = 5,
+    Main_Awake_DT_6 = 6,
+    Main_Block__fin_7 = 7,
+    Main_Block_jmp_8 = 8,
+    Class_Main = 9,
 
 };
 
@@ -7063,95 +7076,86 @@ printf("OK : lbl=%d : org=%p\n", _ceu_lbl, _ceu_org);
 #endif
 
     switch (_ceu_lbl) {
-        /* NODE: Root 119 */
+        /* NODE: Root 128 */
 /* NODE: Dcl_cls 0 */
 
 #line 1 "samples/sample1.ceu"
-case Class_Main:;/* NODE: Block 184 */
+case Class_Main:;/* NODE: Block 226 */
 
 #line 1 "samples/sample1.ceu"
-    {/* NODE: Stmts 183 */
+    {/* NODE: Stmts 225 */
 
 #line 1 "samples/sample1.ceu"
-    {/* NODE: Block 125 */
+    {/* NODE: Block 134 */
 
 #line 1 "samples/sample1.ceu"
-    {
-#line 1 "samples/sample1.ceu"
-    #ifdef CEU_RET
+    {/* NODE: Stmts 133 */
 
 #line 1 "samples/sample1.ceu"
-    int __ceu__ret_0;
+    {/* NODE: Dcl_var 130 */
+/* NODE: SetBlock 132 */
+/* NODE: Block 126 */
 
 #line 1 "samples/sample1.ceu"
-    #endif
-/* NODE: Stmts 124 */
+    {/* NODE: Stmts 125 */
 
 #line 1 "samples/sample1.ceu"
-    {/* NODE: Dcl_var 121 */
-/* NODE: SetBlock 123 */
-/* NODE: Block 117 */
+    {/* NODE: Stmts 122 */
 
 #line 1 "samples/sample1.ceu"
-    {/* NODE: Stmts 116 */
-
-#line 1 "samples/sample1.ceu"
-    {/* NODE: Stmts 113 */
-
-#line 1 "samples/sample1.ceu"
-    {/* NODE: Block 106 */
+    {/* NODE: Block 115 */
 
 #line 1 "samples/sample1.ceu"
     /*  FINALIZE */
-_ceu_org->trls[ 1 ].evt = CEU_IN__CLEAR;
-_ceu_org->trls[ 1 ].lbl = Main_Block__fin_3;
+_ceu_org->trls[ 2 ].evt = CEU_IN__CLEAR;
+_ceu_org->trls[ 2 ].lbl = Main_Block__fin_7;
 
 #line 1 "samples/sample1.ceu"
-    ((CEU_Main*)_ceu_org)->__fin_106_1 = 0;
+    ((CEU_Main*)_ceu_org)->__fin_115_1 = 0;
 #line 1 "samples/sample1.ceu"
     {
 #line 1 "samples/sample1.ceu"
     (((CEU_Main*)_ceu_org)->service).tag = CEU__OPTION___GSOCKETSERVICE__REF_NIL;
-/* NODE: Stmts 104 */
+/* NODE: Stmts 113 */
 
 #line 1 "samples/sample1.ceu"
-    {/* NODE: Stmts 128 */
+    {/* NODE: Stmts 137 */
 
 #line 1 "samples/sample1.ceu"
-    {/* NODE: Dcl_ext 127 */
+    {/* NODE: Dcl_ext 136 */
 
 #line 1 "samples/sample1.ceu"
     }/* NODE: Host 10 */
-/* NODE: Stmts 136 */
+/* NODE: Stmts 145 */
 
 #line 9 "samples/sample1.ceu"
-    {/* NODE: Dcl_nat 129 */
-/* NODE: Dcl_nat 130 */
-/* NODE: Dcl_nat 131 */
-/* NODE: Dcl_nat 132 */
-/* NODE: Dcl_nat 133 */
-/* NODE: Dcl_nat 134 */
-/* NODE: Dcl_nat 135 */
+    {/* NODE: Dcl_nat 138 */
+/* NODE: Dcl_nat 139 */
+/* NODE: Dcl_nat 140 */
+/* NODE: Dcl_nat 141 */
+/* NODE: Dcl_nat 142 */
+/* NODE: Dcl_nat 143 */
+/* NODE: Dcl_nat 144 */
 
 #line 9 "samples/sample1.ceu"
     }/* NODE: Dcl_fun 22 */
-/* NODE: Stmts 139 */
+/* NODE: Stmts 148 */
 
 #line 23 "samples/sample1.ceu"
-    {/* NODE: Dcl_var 138 */
+    {/* NODE: Dcl_var 147 */
 
 #line 23 "samples/sample1.ceu"
-    }/* NODE: Stmts 142 */
+    }/* NODE: Stmts 151 */
 
 #line 24 "samples/sample1.ceu"
-    {/* NODE: Dcl_adt 190 */
-/* NODE: Dcl_var 141 */
+    {/* NODE: Dcl_adt 232 */
+/* NODE: Dcl_var 150 */
 
 #line 24 "samples/sample1.ceu"
     }/* NODE: Finalize 51 */
 
 #line 25 "samples/sample1.ceu"
-    ((CEU_Main*)_ceu_org)->__fin_106_1 = 1;/* NODE: Set 143 */
+    ((CEU_Main*)_ceu_org)->__fin_115_1 = 1;/* NODE: Set 152 */
 
 #line 26 "samples/sample1.ceu"
 /* SET: service *//* NODE: Op1_& 39 */
@@ -7160,7 +7164,7 @@ _ceu_org->trls[ 1 ].lbl = Main_Block__fin_3;
     (((CEU_Main*)_ceu_org)->service) = (CEU__OPTION___GSOCKETSERVICE__REF_pack(g_socket_service_new()));/* NODE: CallStmt 64 */
 
 #line 31 "samples/sample1.ceu"
-    g_socket_listener_add_inet_port(((GSocketListener*)((CEU__OPTION___GSOCKETSERVICE__REF_SOME_assert(_ceu_app, (&((CEU_Main*)_ceu_org)->service),__FILE__,__LINE__)->SOME.v))),1500,NULL,(&((CEU_Main*)_ceu_org)->error));/* NODE: If 145 */
+    g_socket_listener_add_inet_port(((GSocketListener*)((CEU__OPTION___GSOCKETSERVICE__REF_SOME_assert(_ceu_app, (&((CEU_Main*)_ceu_org)->service),__FILE__,__LINE__)->SOME.v))),1500,NULL,(&((CEU_Main*)_ceu_org)->error));/* NODE: If 154 */
 
 #line 34 "samples/sample1.ceu"
     if (((((CEU_Main*)_ceu_org)->error)!=NULL)) {
@@ -7173,21 +7177,21 @@ _ceu_org->trls[ 1 ].lbl = Main_Block__fin_3;
     {/* NODE: CallStmt 74 */
 
 #line 35 "samples/sample1.ceu"
-    printf("Error: %s\n",(((*(((CEU_Main*)_ceu_org)->error)).message)));/* NODE: Stmts 151 */
+    printf("Error: %s\n",(((*(((CEU_Main*)_ceu_org)->error)).message)));/* NODE: Stmts 160 */
 
 #line 36 "samples/sample1.ceu"
-    {/* NODE: Set 149 */
+    {/* NODE: Set 158 */
 
 #line 36 "samples/sample1.ceu"
 /* SET: _ret *//* NODE: NUMBER 75 */
 
 #line 36 "samples/sample1.ceu"
-    (__ceu__ret_0) = 0;
+    (((CEU_Main*)_ceu_org)->_ret_0) = 0;
 #line 36 "samples/sample1.ceu"
     #ifdef CEU_RET
-    _ceu_app->ret = (__ceu__ret_0);
+    _ceu_app->ret = (((CEU_Main*)_ceu_org)->_ret_0);
 #endif
-/* NODE: Escape 150 */
+/* NODE: Escape 159 */
 
 #line 36 "samples/sample1.ceu"
     _ceu_lbl = Main_Set_out_0;
@@ -7206,7 +7210,7 @@ goto _CEU_GOTO_;
         }   /* opened in "if (0)" */
 }       /* opened in Block_pre */
 } else {
-/* NODE: Nothing 144 */
+/* NODE: Nothing 153 */
 }
 /* NODE: CallStmt 86 */
 
@@ -7214,61 +7218,195 @@ goto _CEU_GOTO_;
     connect_service_signal(((CEU__OPTION___GSOCKETSERVICE__REF_SOME_assert(_ceu_app, (&((CEU_Main*)_ceu_org)->service),__FILE__,__LINE__)->SOME.v)));/* NODE: CallStmt 93 */
 
 #line 41 "samples/sample1.ceu"
-    g_socket_service_start(((CEU__OPTION___GSOCKETSERVICE__REF_SOME_assert(_ceu_app, (&((CEU_Main*)_ceu_org)->service),__FILE__,__LINE__)->SOME.v)));/* NODE: Block 155 */
+    g_socket_service_start(((CEU__OPTION___GSOCKETSERVICE__REF_SOME_assert(_ceu_app, (&((CEU_Main*)_ceu_org)->service),__FILE__,__LINE__)->SOME.v)));/* NODE: ParOr 110 */
 
 #line 43 "samples/sample1.ceu"
-    {/* NODE: Stmts 154 */
-
-#line 43 "samples/sample1.ceu"
-    {/* NODE: Stmts 153 */
-
+/* ParOr: spawn subs */
 #line 43 "samples/sample1.ceu"
     {
-#line 43 "samples/sample1.ceu"
-    }/* NODE: Loop 152 */
+    tceu_stk stk_ = { _ceu_stk, _ceu_org, 0, 1, {} };
+    if (setjmp(stk_.jmp) != 0) {
+#ifdef CEU_ORGS
+        _ceu_org = CEU_JMP_ORG;
+#endif
+        _ceu_trl = CEU_JMP_TRL;
 
 #line 43 "samples/sample1.ceu"
-    for (;;) {
-/* NODE: Block 102 */
+    _ceu_lbl = CEU_JMP_LBL;
+goto _CEU_GOTO_;
 
-#line 44 "samples/sample1.ceu"
-    {/* NODE: Stmts 101 */
+#line 43 "samples/sample1.ceu"
+        }
 
-#line 44 "samples/sample1.ceu"
-    {/* NODE: Stmts 182 */
+    /* SETJMP: starting trails in a par
+     * The 1st trail might abort an enclosing par/or, or emit something that 
+     * does.
+     */
 
-#line 44 "samples/sample1.ceu"
-    {/* NODE: Nothing 156 */
-/* NODE: Await 95 */
+#line 43 "samples/sample1.ceu"
+        _ceu_org->trls[ 0 ].lbl = Main_ParOr_sub_1_2;
+    ceu_app_go(_ceu_app,NULL,_ceu_org,
+               &_ceu_org->trls[ 0 ],
+               &stk_,NULL);
 
-#line 44 "samples/sample1.ceu"
-    _CEU_NO_95_:
-if (0) { goto _CEU_NO_95_; /* avoids "not used" warning */ }
+#line 43 "samples/sample1.ceu"
+        _ceu_trl = &_ceu_org->trls[ 1 ];
 
-#line 44 "samples/sample1.ceu"
-    _ceu_trl->evt = CEU_IN_INCOMING;
-_ceu_trl->lbl = Main_Awake_INCOMING_2;
+#line 43 "samples/sample1.ceu"
+    }
+/* NODE: Block 109 */
+
+#line 49 "samples/sample1.ceu"
+    {/* NODE: Stmts 108 */
+
+#line 49 "samples/sample1.ceu"
+    {/* NODE: Stmts 219 */
+
+#line 49 "samples/sample1.ceu"
+    {/* NODE: Nothing 193 */
+/* NODE: Await 107 */
+
+#line 49 "samples/sample1.ceu"
+    ceu_out_wclock(_ceu_app, (s32)((s32)5000000), &((CEU_Main*)_ceu_org)->__wclk_107, NULL);
+
+#line 49 "samples/sample1.ceu"
+    _CEU_NO_107_:
+if (0) { goto _CEU_NO_107_; /* avoids "not used" warning */ }
+
+#line 49 "samples/sample1.ceu"
+    _ceu_trl->evt = CEU_IN__WCLOCK;
+_ceu_trl->lbl = Main_Awake_DT_6;
 _ceu_trl->seqno = _ceu_app->seqno;
 
-#line 44 "samples/sample1.ceu"
+#line 49 "samples/sample1.ceu"
     return;
 
-case Main_Awake_INCOMING_2:;
+case Main_Awake_DT_6:;
 
-#line 44 "samples/sample1.ceu"
+#line 49 "samples/sample1.ceu"
+        /* subtract time and check if I have to awake */
+    {
+        s32** __ceu_casted = (s32**)_ceu_evt->param;
+        if (!ceu_out_wclock(_ceu_app, *(*__ceu_casted), NULL, &((CEU_Main*)_ceu_org)->__wclk_107) ) {
+            goto _CEU_NO_107_;
+        }
+    }
+
+#line 49 "samples/sample1.ceu"
     #ifdef CEU_DEBUG_TRAILS
 #ifndef CEU_OS
 printf("\tOK!\n");
 #endif
 #endif
-/* NODE: Nothing 201 */
-/* NODE: Nothing 202 */
+/* NODE: Nothing 245 */
+/* NODE: Nothing 246 */
+
+#line 49 "samples/sample1.ceu"
+    }
+#line 49 "samples/sample1.ceu"
+    }
+#line 49 "samples/sample1.ceu"
+/* CLEAR: Block (49) */
+#line 49 "samples/sample1.ceu"
+    if (0) {
+
+#line 49 "samples/sample1.ceu"
+        }   /* opened in "if (0)" */
+}       /* opened in Block_pre */
+
+#line 43 "samples/sample1.ceu"
+/* PAROR JOIN */
+#line 43 "samples/sample1.ceu"
+    _ceu_lbl = Main_ParOr_out_3;
+goto _CEU_GOTO_;
+
+#line 43 "samples/sample1.ceu"
+case Main_ParOr_sub_1_2:;/* NODE: Block 105 */
 
 #line 44 "samples/sample1.ceu"
-    }/* NODE: CallStmt 100 */
+    {/* NODE: Stmts 104 */
+
+#line 44 "samples/sample1.ceu"
+    {/* NODE: Block 164 */
+
+#line 44 "samples/sample1.ceu"
+    {/* NODE: Stmts 163 */
+
+#line 44 "samples/sample1.ceu"
+    {/* NODE: Stmts 162 */
+
+#line 44 "samples/sample1.ceu"
+    {
+#line 44 "samples/sample1.ceu"
+    }/* NODE: Loop 161 */
+
+#line 44 "samples/sample1.ceu"
+    for (;;) {
+/* NODE: Block 102 */
 
 #line 45 "samples/sample1.ceu"
+    {/* NODE: Stmts 101 */
+
+#line 45 "samples/sample1.ceu"
+    {/* NODE: Stmts 191 */
+
+#line 45 "samples/sample1.ceu"
+    {/* NODE: Nothing 165 */
+/* NODE: Await 95 */
+
+#line 45 "samples/sample1.ceu"
+    _CEU_NO_95_:
+if (0) { goto _CEU_NO_95_; /* avoids "not used" warning */ }
+
+#line 45 "samples/sample1.ceu"
+    _ceu_trl->evt = CEU_IN_INCOMING;
+_ceu_trl->lbl = Main_Awake_INCOMING_5;
+_ceu_trl->seqno = _ceu_app->seqno;
+
+#line 45 "samples/sample1.ceu"
+    return;
+
+case Main_Awake_INCOMING_5:;
+
+#line 45 "samples/sample1.ceu"
+    #ifdef CEU_DEBUG_TRAILS
+#ifndef CEU_OS
+printf("\tOK!\n");
+#endif
+#endif
+/* NODE: Nothing 243 */
+/* NODE: Nothing 244 */
+
+#line 45 "samples/sample1.ceu"
+    }/* NODE: CallStmt 100 */
+
+#line 46 "samples/sample1.ceu"
     printf("client connected\n");
+#line 45 "samples/sample1.ceu"
+    }
+#line 45 "samples/sample1.ceu"
+/* CLEAR: Block (45) */
+#line 45 "samples/sample1.ceu"
+    if (0) {
+
+#line 45 "samples/sample1.ceu"
+        }   /* opened in "if (0)" */
+}       /* opened in Block_pre */
+
+#line 44 "samples/sample1.ceu"
+    }
+
+#line 44 "samples/sample1.ceu"
+    }
+#line 44 "samples/sample1.ceu"
+/* CLEAR: Block (44) */
+#line 44 "samples/sample1.ceu"
+    if (0) {
+
+#line 44 "samples/sample1.ceu"
+        }   /* opened in "if (0)" */
+}       /* opened in Block_pre */
+
 #line 44 "samples/sample1.ceu"
     }
 #line 44 "samples/sample1.ceu"
@@ -7281,19 +7419,57 @@ printf("\tOK!\n");
 }       /* opened in Block_pre */
 
 #line 43 "samples/sample1.ceu"
+case Main_ParOr_out_3:;
+#line 43 "samples/sample1.ceu"
+/* CLEAR: ParOr (43) */
+#line 43 "samples/sample1.ceu"
+    {
+    tceu_evt evt;
+             evt.id = CEU_IN__CLEAR;
+    ceu_sys_go_ex(_ceu_app, &evt,
+                  _ceu_stk,
+                  _ceu_org,
+                  &_ceu_org->trls[ 0 ],
+                  &_ceu_org->trls[ 2 ]);
+                                        /* excludes +1 */
+}
+
+/* LONGJMP
+ * Block termination: we will abort all trails between [t1,t2].
+ * Return status=1 to distinguish from longjmp from organism termination.
+ * We want to continue from "me.lbl_jmp" below.
+ */
+#ifdef CEU_ORGS
+CEU_JMP_ORG = _ceu_org;
+#endif
+CEU_JMP_TRL = _ceu_trl;
+CEU_JMP_LBL = Main_ParOr_jmp_4;
+ceu_longjmp(1, _ceu_stk, _ceu_org,
+            0,1);
+
+#line 43 "samples/sample1.ceu"
+case Main_ParOr_jmp_4:;/* NODE: Stmts 224 */
+
+#line 52 "samples/sample1.ceu"
+    {/* NODE: Set 222 */
+
+#line 52 "samples/sample1.ceu"
+/* SET: _ret *//* NODE: NUMBER 111 */
+
+#line 52 "samples/sample1.ceu"
+    (((CEU_Main*)_ceu_org)->_ret_0) = 0;
+#line 52 "samples/sample1.ceu"
+    #ifdef CEU_RET
+    _ceu_app->ret = (((CEU_Main*)_ceu_org)->_ret_0);
+#endif
+/* NODE: Escape 223 */
+
+#line 52 "samples/sample1.ceu"
+    _ceu_lbl = Main_Set_out_0;
+goto _CEU_GOTO_;
+
+#line 52 "samples/sample1.ceu"
     }
-
-#line 43 "samples/sample1.ceu"
-    }
-#line 43 "samples/sample1.ceu"
-/* CLEAR: Block (43) */
-#line 43 "samples/sample1.ceu"
-    if (0) {
-
-#line 43 "samples/sample1.ceu"
-        }   /* opened in "if (0)" */
-}       /* opened in Block_pre */
-
 #line 1 "samples/sample1.ceu"
     }
 #line 1 "samples/sample1.ceu"
@@ -7302,9 +7478,9 @@ printf("\tOK!\n");
     if (0) {
 
 #line 1 "samples/sample1.ceu"
-case Main_Block__fin_3:;
+case Main_Block__fin_7:;
 #line 1 "samples/sample1.ceu"
-    if (((CEU_Main*)_ceu_org)->__fin_106_1) {
+    if (((CEU_Main*)_ceu_org)->__fin_115_1) {
     /* NODE: Finally 50 */
 /* NODE: Block 49 */
 
@@ -7361,7 +7537,7 @@ case Main_Set_out_0:;
                   _ceu_stk,
                   _ceu_org,
                   &_ceu_org->trls[ 0 ],
-                  &_ceu_org->trls[ 2 ]);
+                  &_ceu_org->trls[ 3 ]);
                                         /* excludes +1 */
 }
 
@@ -7376,7 +7552,7 @@ CEU_JMP_ORG = _ceu_org;
 CEU_JMP_TRL = _ceu_trl;
 CEU_JMP_LBL = Main_Set_jmp_1;
 ceu_longjmp(1, _ceu_stk, _ceu_org,
-            0,1);
+            0,2);
 
 #line 1 "samples/sample1.ceu"
 case Main_Set_jmp_1:;
