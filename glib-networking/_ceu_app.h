@@ -3,11 +3,14 @@
 
 #include "ceu_types.h"
 
-#define CEU_GOTO
-#define CEU_EXTS
+#define CEU_CLEAR
 #define CEU_RET
 #define CEU_WCLOCKS
-#define CEU_CLEAR
+#define CEU_EXTS
+#define CEU_ORGS
+#define CEU_GOTO
+#define CEU_ORGS_NEWS
+#define CEU_ORGS_NEWS_MALLOC
      /* CEU_EXTS, CEU_WCLOCKS, CEU_INTS, ... */
 
 /* TODO: lbl => unsigned */
@@ -21,7 +24,7 @@ typedef s16 tceu_ncls;
 #endif
 
 /* TODO: remove */
-#define CEU_NTRAILS 3
+#define CEU_NTRAILS 6
 
 #ifndef _CEU_OS_H
 #define _CEU_OS_H
@@ -1632,26 +1635,40 @@ void ceu_pool_free (tceu_pool* pool, byte* val);
 #define CEU_IN__THREAD 249
 #define CEU_IN__WCLOCK 248
 #define CEU_IN_INCOMING 247
+#define CEU_IN_READ_DONE 246
 #define CEU_IN_higher CEU_IN__INIT
-#define CEU_IN_lower 247
+#define CEU_IN_lower 246
 #define CEU_OUT_n 0
       /* CEU_IN_, CEU_OUT_ */
-#define CEU_FUN_connect_service_signal
-#define CEU_FUN_g_object_unref
+#define CEU_FUN_G_IO_STREAM
+#define CEU_FUN_g_io_stream_get_input_stream
+#define CEU_FUN_g_inet_address_to_string
+#define CEU_FUN_strlen
 #define CEU_FUN_g_socket_service_new
-#define CEU_FUN_g_socket_service_start
 #define CEU_FUN_printf
+#define CEU_FUN_g_object_unref
+#define CEU_FUN_g_inet_socket_address_get_port
+#define CEU_FUN_g_object_ref
+#define CEU_FUN_connect_socket_service_incoming_signal
+#define CEU_FUN_strncmp
+#define CEU_FUN_PTR2REF
+#define CEU_FUN_g_socket_connection_get_remote_address
 #define CEU_FUN_g_socket_listener_add_inet_port
+#define CEU_FUN_g_socket_service_start
+#define CEU_FUN_g_inet_socket_address_get_address
+#define CEU_FUN_async_read
+#define CEU_FUN_free
+#define CEU_FUN_G_INET_SOCKET_ADDRESS
    /* CEU_FUN_ */
 typedef struct {
 	int _1;
 } tceu__int;
 typedef struct {
-	GSocketService* _1;
-	GSocketConnection* _2;
-	GObject* _3;
-	gpointer _4;
-} tceu__GSocketService___GSocketConnection___GObject___gpointer;
+	InConnection* _1;
+} tceu__InConnection_;
+typedef struct {
+	InputMessage* _1;
+} tceu__InputMessage_;
 typedef struct {
 	s32 _1;
 } tceu__s32;
@@ -1662,7 +1679,215 @@ typedef struct {
 /* each class may define new native code that appear after its struct declaration */
 
 enum {
-CEU_NONE232,
+CEU_NONE600,
+CEU__OPTION___GSOCKETCONNECTION__REF_NIL,
+CEU__OPTION___GSOCKETCONNECTION__REF_SOME
+};
+
+typedef struct CEU__Option___GSocketConnection__ref {
+    u8 tag;
+    union {
+                                        struct { /* BLOCK ln=21 */
+                                        } NIL;
+                                        struct { /* BLOCK ln=21 */
+                                          GSocketConnection* v;
+                                        } SOME;
+    };
+}
+ CEU__Option___GSocketConnection__ref;
+
+enum {
+CEU_NONE606,
+CEU__OPTION___GSOCKETADDRESS__REF_NIL,
+CEU__OPTION___GSOCKETADDRESS__REF_SOME
+};
+
+typedef struct CEU__Option___GSocketAddress__ref {
+    u8 tag;
+    union {
+                                              struct { /* BLOCK ln=28 */
+                                              } NIL;
+                                              struct { /* BLOCK ln=28 */
+                                                GSocketAddress* v;
+                                              } SOME;
+    };
+}
+ CEU__Option___GSocketAddress__ref;
+
+enum {
+CEU_NONE612,
+CEU__OPTION___GINETADDRESS__REF_NIL,
+CEU__OPTION___GINETADDRESS__REF_SOME
+};
+
+typedef struct CEU__Option___GInetAddress__ref {
+    u8 tag;
+    union {
+                                              struct { /* BLOCK ln=30 */
+                                              } NIL;
+                                              struct { /* BLOCK ln=30 */
+                                                GInetAddress* v;
+                                              } SOME;
+    };
+}
+ CEU__Option___GInetAddress__ref;
+
+enum {
+CEU_NONE618,
+CEU__OPTION__CHAR__REF_NIL,
+CEU__OPTION__CHAR__REF_SOME
+};
+
+typedef struct CEU__Option__char__ref {
+    u8 tag;
+    union {
+                                              struct { /* BLOCK ln=47 */
+                                              } NIL;
+                                              struct { /* BLOCK ln=47 */
+                                                char* v;
+                                              } SOME;
+    };
+}
+ CEU__Option__char__ref;
+
+enum {
+CEU_NONE624,
+CEU__OPTION___GINPUTSTREAM__REF_NIL,
+CEU__OPTION___GINPUTSTREAM__REF_SOME
+};
+
+typedef struct CEU__Option___GInputStream__ref {
+    u8 tag;
+    union {
+                                              struct { /* BLOCK ln=62 */
+                                              } NIL;
+                                              struct { /* BLOCK ln=62 */
+                                                GInputStream* v;
+                                              } SOME;
+    };
+}
+ CEU__Option___GInputStream__ref;
+
+typedef struct CEU_Handler {
+#ifdef CEU_ORGS
+  struct tceu_org org;
+#endif
+  tceu_trl trls_[ 3 ];
+                            struct { /* BLOCK ln=20 */
+                              CEU__Option___GSocketConnection__ref connection;
+                              union {
+                                  union {
+                                          union {
+                                          };
+                                          union {
+                                          };
+                                  };
+                                struct { /* BLOCK ln=20 */
+                                  union {
+                                    struct { /* BLOCK ln=23 */
+                                    u8 __fin_230_1: 1;
+                                    u8 __fin_230_2: 1;
+                                    u8 __fin_230_3: 1;
+                                    u8 __fin_230_4: 1;
+                                      CEU__Option___GInputStream__ref stream;
+                                      CEU__Option__char__ref buff;
+                                      CEU__Option___GInetAddress__ref inetaddr;
+                                      CEU__Option___GSocketAddress__ref sockaddr;
+                                      GError* conn_error;
+                                      int me;
+                                      u16 port;
+                                      union {
+                                        union {
+                                        };
+                                        union {
+                                                union {
+                                                };
+                                                union {
+                                                };
+                                        };
+                                        union {
+                                        };
+                                        union {
+                                                union {
+                                                };
+                                                union {
+                                                };
+                                        };
+                                            struct { /* BLOCK ln=36 */
+                                              union {
+                                              };
+                                            } ;
+                                            struct { /* BLOCK ln=43 */
+                                              union {
+                                              };
+                                            } ;
+                                        union {
+                                                union {
+                                                };
+                                                union {
+                                                };
+                                        };
+                                            struct { /* BLOCK ln=51 */
+                                              union {
+                                              };
+                                            } ;
+                                        union {
+                                        };
+                                        union {
+                                                union {
+                                                };
+                                                union {
+                                                };
+                                        };
+                                            struct { /* BLOCK ln=66 */
+                                              union {
+                                              };
+                                            } ;
+                                        struct { /* BLOCK ln=68 */
+                                          union {
+                                            union {
+                                            };
+                                              struct { /* BLOCK ln=69 */
+                                                union {
+                                                  union {
+                                                    union {
+                                                      struct { /* BLOCK ln=70 */
+                                                        union {
+                                                          union {
+                                                          };
+                                                            union {
+                                                            };
+                                                        };
+                                                      } ;
+                                                    };
+                                                  };
+                                                    struct { /* BLOCK ln=75 */
+                                                      union {
+                                                      };
+                                                    } ;
+                                                };
+                                              } ;
+                                          };
+                                        } ;
+                                            struct { /* BLOCK ln=80 */
+                                              union {
+                                              };
+                                            } ;
+                                      };
+                                    } ;
+                                  };
+                                } ;
+                              };
+                            } ;
+
+} CEU_Handler;
+
+
+
+
+
+enum {
+CEU_NONE630,
 CEU__OPTION___GSOCKETSERVICE__REF_NIL,
 CEU__OPTION___GSOCKETSERVICE__REF_SOME
 };
@@ -1670,9 +1895,9 @@ CEU__OPTION___GSOCKETSERVICE__REF_SOME
 typedef struct CEU__Option___GSocketService__ref {
     u8 tag;
     union {
-                              struct { /* BLOCK ln=24 */
+                              struct { /* BLOCK ln=85 */
                               } NIL;
-                              struct { /* BLOCK ln=24 */
+                              struct { /* BLOCK ln=85 */
                                 GSocketService* v;
                               } SOME;
     };
@@ -1682,19 +1907,21 @@ typedef struct CEU_Main {
 #ifdef CEU_ORGS
   struct tceu_org org;
 #endif
-  tceu_trl trls_[ 3 ];
+  tceu_trl trls_[ 6 ];
     struct { /* BLOCK ln=1 */
+      tceu_pool_orgs _top_pool_0;
+;
       union {
           union {
           };
         struct { /* BLOCK ln=1 */
-          int _ret_0;
+          int _ret_1;
           union {
               struct { /* BLOCK ln=1 */
                 union {
                   union {
                     struct { /* BLOCK ln=1 */
-                    u8 __fin_115_1: 1;
+                    u8 __fin_324_1: 1;
                       GError* error;
                       CEU__Option___GSocketService__ref service;
                       union {
@@ -1702,10 +1929,14 @@ typedef struct CEU_Main {
                         };
                         union {
                         };
-                          struct { /* BLOCK ln=20 */
-                            union {
-                            };
-                          } ;
+                        union {
+                        };
+                        union {
+                        };
+                        union {
+                        };
+                        union {
+                        };
                         union {
                         };
                         union {
@@ -1714,37 +1945,42 @@ typedef struct CEU_Main {
                                 union {
                                 };
                         };
-                            struct { /* BLOCK ln=28 */
+                            struct { /* BLOCK ln=89 */
                               union {
                               };
                             } ;
-                          struct { /* BLOCK ln=35 */
+                          struct { /* BLOCK ln=96 */
                             union {
                               union {
                               };
                             };
                           } ;
                         struct {
-                          struct { /* BLOCK ln=44 */
+                          struct { /* BLOCK ln=104 */
                             union {
-                              struct { /* BLOCK ln=44 */
+                              struct { /* BLOCK ln=104 */
+                                InConnection* conn_5;
                                 union {
                                   union {
                                   };
-                                    struct { /* BLOCK ln=45 */
+                                    struct { /* BLOCK ln=105 */
                                       union {
                                         union {
                                         };
+                                            struct { /* BLOCK ln=106 */
+                                              union {
+                                              };
+                                            } ;
                                       };
                                     } ;
                                 };
                               } ;
                             };
                           } ;
-                          struct { /* BLOCK ln=49 */
+                          struct { /* BLOCK ln=110 */
                             union {
                               union {
-                                  s32 __wclk_107;
+                                  s32 __wclk_316;
                               };
                             };
                           } ;
@@ -1764,8 +2000,6 @@ typedef struct CEU_Main {
 } CEU_Main;
 
 
-gboolean  CEU_Main_incoming_cb (tceu_app* _ceu_app, CEU_Main* __ceu_this, GSocketService* service, GSocketConnection* connection, GObject* source, gpointer user_data)
-;
 
 
 

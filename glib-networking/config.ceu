@@ -1,0 +1,23 @@
+native @plain _GInputStream;
+
+native @nohold _printf (), \
+               _malloc (), \
+               _free (), \
+               _strncmp (), \
+               _strlen (), \
+               _connect_socket_service_incoming_signal(), \
+               _async_read (), \
+               _gsocket_service_new (), \
+               _g_object_ref (), \
+               _g_object_unref (), \
+               _g_socket_listener_add_inet_port (), \
+               _g_socket_service_start (), \
+               _g_socket_connection_get_remote_address (), \
+               _g_inet_socket_address_get_address (), \
+               _g_inet_socket_address_get_port (), \
+               _g_inet_address_to_string (), \
+               _g_io_stream_get_input_stream (), \
+               _G_IO_STREAM (), \
+               _G_INET_SOCKET_ADDRESS (), \
+               _G_CALLBACK ();
+

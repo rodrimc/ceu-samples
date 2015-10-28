@@ -1,23 +1,84 @@
-input (_GSocketService&&,_GSocketConnection&&,_GObject &&,_gpointer) INCOMING;
+#include "config.ceu"
+
+input _InConnection&& INCOMING;
+input _InputMessage&& READ_DONE;
 
 native do
   ##include <stdio.h>
+  ##include <string.h>
+  ##define PTR2REF(x) x
+
+  int ORGS = 0;
 end
 
+native @pure _PTR2REF ();
+
 #define PORT 1500
+#define BUFF_SIZE 1024
+#define SENTINEL "quit"
 
-native @nohold _printf (), \
-               _gsocket_service_new (), \
-               _g_object_unref (), \
-               _g_socket_listener_add_inet_port (), \
-               _connect_service_signal(), \
-               _g_socket_service_start (), \
-               _G_CALLBACK ();
+class Handler with
+  var _GSocketConnection&? connection; 
+do
+  var int me = _ORGS; 
+  _ORGS = _ORGS + 1;
+   
+  _g_object_ref (&&connection!);
 
-function (_GSocketService &&service, _GSocketConnection &&connection,
-          _GObject &&source, _gpointer user_data) => _gboolean incoming_cb do
+  var _GSocketAddress&? sockaddr;
+  var _GError&& conn_error;
+  var _GInetAddress&? inetaddr;
+  
+  finalize
+    sockaddr = &_g_socket_connection_get_remote_address (&&connection!,
+                                                          &&conn_error);
+  with
+    _g_object_unref (&&sockaddr!);
+  end
 
-  _printf ("client connected\n");
+  finalize
+    inetaddr = &_g_inet_socket_address_get_address (
+                                        _G_INET_SOCKET_ADDRESS(&&sockaddr!));
+  with
+    _g_object_unref (&&inetaddr!);
+  end
+  _g_object_ref (&&inetaddr!);
+  
+  var char&? buff;
+  finalize
+    buff = &_g_inet_address_to_string (&&inetaddr!); 
+  with
+    _free (&&buff!);
+  end
+
+  var u16 port = _g_inet_socket_address_get_port (
+                                          _G_INET_SOCKET_ADDRESS(&&sockaddr!));
+  
+  _printf ("*****\n");
+  _printf ("New client:\n");
+  _printf ("IP: %s\n", &&buff!);
+  _printf ("Port: %d\n", port);
+  _printf ("*****\n");
+  var _GInputStream&? stream;
+  finalize
+    stream = &_g_io_stream_get_input_stream (_G_IO_STREAM(&&connection!));
+  with
+  end
+
+  loop do
+    _async_read (&&stream!, BUFF_SIZE, me);
+    var _InputMessage &&message = await READ_DONE until (message:to == me);
+    message:buff[message:read_count] = '\0';
+
+    _printf ("Message from %s:%d: %s", &&buff!, port, message:buff);
+    if _strncmp (message:buff, SENTINEL, _strlen (SENTINEL)) == 0 then
+      break;
+    end
+  end
+
+  finalize with
+    _g_object_unref (&&connection!);
+  end
 end
 
 var _GError&& error;
@@ -28,7 +89,7 @@ with
   _g_object_unref (&&service!); 
 end
 
-_g_socket_listener_add_inet_port ((_GSocketListener&&)&&service!, 1500, 
+_g_socket_listener_add_inet_port ((_GSocketListener&&)&&service!, PORT, 
                     null, &&error);
 
 if error != null then
@@ -36,17 +97,17 @@ if error != null then
   escape 0;
 end
 
-_connect_service_signal (&&service!); 
-
+_connect_socket_service_incoming_signal (&&service!); 
 _g_socket_service_start (&&service!);
 
 par/or do
-  loop do
-    await INCOMING;
-    _printf ("client connected\n");
-  end
+  every conn in INCOMING do
+    spawn Handler with
+      this.connection = &_PTR2REF(conn:connection);
+    end;
+  end 
 with
-  await 5s;
+  await 10s;
 end
 
 escape 0;
