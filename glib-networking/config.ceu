@@ -7,6 +7,7 @@ native @nohold _printf (), \
                _strlen (), \
                _connect_socket_service_incoming_signal(), \
                _async_read (), \
+               _async_write (), \
                _gsocket_service_new (), \
                _g_object_ref (), \
                _g_object_unref (), \

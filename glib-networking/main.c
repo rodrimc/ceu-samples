@@ -39,14 +39,18 @@ typedef struct _InConnection
   gpointer user_data;
 } InConnection;
 
-typedef struct _InputMessage
+typedef struct _Message
 {
   GSocketConnection *connection;
+  GError *error;
   gsize buff_len;
-  gssize read_count;
+  gssize bytes_count;
   char *buff;
   int to;
-} InputMessage;
+} Message;
+
+void
+async_write(GOutputStream *output_stream, const char *buff, gsize buff_len, int handler_id);
 
 void
 async_read(GInputStream *input_stream, gsize buff_len, int handler_id);
@@ -90,10 +94,27 @@ read_done (GObject *source_object, GAsyncResult *res, gpointer user_data)
 #ifdef CEU_IN_READ_DONE
   GInputStream *stream = G_INPUT_STREAM (source_object);
   GError *error = NULL;
-  InputMessage *message = user_data;
-  message->read_count = g_input_stream_read_finish (stream, res, &error);
-  
+  Message *message = user_data;
+  message->bytes_count = g_input_stream_read_finish (stream, res, &error);
+  message->error = error;
+
   ceu_sys_go(&app, CEU_IN_READ_DONE, &message);
+  free (message->buff);
+  free (message);
+#endif
+}
+
+void 
+write_done (GObject *source_object, GAsyncResult *res, gpointer user_data)
+{
+#ifdef CEU_IN_WRITE_DONE
+  GOutputStream *stream = G_OUTPUT_STREAM (source_object);
+  GError *error = NULL;
+  Message *message = user_data;
+  message->bytes_count = g_output_stream_write_finish (stream, res, &error);
+  message->error = error;
+
+  ceu_sys_go(&app, CEU_IN_WRITE_DONE, &message);
   free (message->buff);
   free (message);
 #endif
@@ -102,7 +123,7 @@ read_done (GObject *source_object, GAsyncResult *res, gpointer user_data)
 void
 async_read (GInputStream *input_stream, gsize buff_len, int handler_id)
 {
-  InputMessage *input = g_new0 (InputMessage, 1);
+  Message *input = (Message *) malloc (sizeof (Message));
   input->buff_len = buff_len;
   input->buff = (char *) malloc (input->buff_len *  sizeof (char));
   input->to = handler_id;
@@ -112,12 +133,25 @@ async_read (GInputStream *input_stream, gsize buff_len, int handler_id)
 }
 
 void
+async_write (GOutputStream *output_stream, const char* buff, gsize buff_len, 
+                                                                int handler_id)
+{
+  Message *output = (Message *) malloc (sizeof (Message));
+  output->buff_len = buff_len;
+  output->buff = (char *) malloc (output->buff_len *  sizeof (char));
+  strncpy (output->buff, buff, buff_len);
+  output->to = handler_id;
+  
+  g_output_stream_write_async (output_stream, output->buff, output->buff_len, 
+      G_PRIORITY_DEFAULT, NULL, write_done, output);
+}
+
+void
 connect_socket_service_incoming_signal(GSocketService *service)
 {
   g_signal_connect (service, "incoming", 
       G_CALLBACK (incoming_callback), NULL);
 }
-
 
 gboolean
 update_ceu_time (gpointer data)

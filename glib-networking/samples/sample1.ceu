@@ -1,7 +1,8 @@
 #include "config.ceu"
 
 input _InConnection&& INCOMING;
-input _InputMessage&& READ_DONE;
+input _Message&& READ_DONE;
+input _Message&& WRITE_DONE;
 
 native do
   ##include <stdio.h>
@@ -22,7 +23,7 @@ class Handler with
 do
   var int me = _ORGS; 
   _ORGS = _ORGS + 1;
-   
+
   _g_object_ref (&&connection!);
 
   var _GSocketAddress&? sockaddr;
@@ -59,23 +60,40 @@ do
   _printf ("IP: %s\n", &&buff!);
   _printf ("Port: %d\n", port);
   _printf ("*****\n");
-  var _GInputStream&? stream;
+  var _GInputStream&? input_stream;
   finalize
-    stream = &_g_io_stream_get_input_stream (_G_IO_STREAM(&&connection!));
+    input_stream = &_g_io_stream_get_input_stream (
+                                                  _G_IO_STREAM(&&connection!));
+  with
+  end
+  
+  var _GOutputStream&? output_stream;
+  finalize
+    output_stream = &_g_io_stream_get_output_stream (
+                                                  _G_IO_STREAM(&&connection!));
   with
   end
 
+par/or do
   loop do
-    _async_read (&&stream!, BUFF_SIZE, me);
-    var _InputMessage &&message = await READ_DONE until (message:to == me);
-    message:buff[message:read_count] = '\0';
+    _async_read (&&input_stream!, BUFF_SIZE, me);
+    var _Message &&message = await READ_DONE until (message:to == me);
+    message:buff[message:bytes_count] = '\0';
 
-    _printf ("Message from %s:%d: %s", &&buff!, port, message:buff);
+    _printf ("Message (handler #%d): %s", me, message:buff);
     if _strncmp (message:buff, SENTINEL, _strlen (SENTINEL)) == 0 then
       break;
     end
+   
+    //echoing
+    _async_write (&&output_stream!, message:buff, _strlen(message:buff), me);
   end
-
+with
+  loop do
+    var _Message &&message = await WRITE_DONE until (message:to == me);
+    _printf ("Bytes sent: %lu\n", message:bytes_count);
+  end
+end
   finalize with
     _g_object_unref (&&connection!);
   end
@@ -107,7 +125,7 @@ par/or do
     end;
   end 
 with
-  await 10s;
+  await 30s;
 end
 
 escape 0;

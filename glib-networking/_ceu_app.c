@@ -33,14 +33,14 @@ SOFTWARE.
 
 #include "ceu_types.h"
 
-#define CEU_CLEAR
-#define CEU_RET
 #define CEU_WCLOCKS
-#define CEU_EXTS
 #define CEU_ORGS
+#define CEU_ORGS_NEWS_MALLOC
+#define CEU_CLEAR
+#define CEU_EXTS
 #define CEU_GOTO
 #define CEU_ORGS_NEWS
-#define CEU_ORGS_NEWS_MALLOC
+#define CEU_RET
      /* CEU_EXTS, CEU_WCLOCKS, CEU_INTS, ... */
 
 /* TODO: lbl => unsigned */
@@ -54,7 +54,7 @@ typedef s16 tceu_ncls;
 #endif
 
 /* TODO: remove */
-#define CEU_NTRAILS 6
+#define CEU_NTRAILS 7
 
 #ifndef _CEU_OS_H
 #define _CEU_OS_H
@@ -1666,42 +1666,45 @@ void ceu_pool_free (tceu_pool* pool, byte* val);
 #define CEU_IN__WCLOCK 248
 #define CEU_IN_INCOMING 247
 #define CEU_IN_READ_DONE 246
+#define CEU_IN_WRITE_DONE 245
 #define CEU_IN_higher CEU_IN__INIT
-#define CEU_IN_lower 246
+#define CEU_IN_lower 245
 #define CEU_OUT_n 0
       /* CEU_IN_, CEU_OUT_ */
+#define CEU_FUN_strncmp
+#define CEU_FUN_async_write
+#define CEU_FUN_G_INET_SOCKET_ADDRESS
+#define CEU_FUN_g_inet_socket_address_get_port
 #define CEU_FUN_G_IO_STREAM
+#define CEU_FUN_g_socket_listener_add_inet_port
+#define CEU_FUN_strlen
 #define CEU_FUN_g_io_stream_get_input_stream
 #define CEU_FUN_g_inet_address_to_string
-#define CEU_FUN_strlen
-#define CEU_FUN_g_socket_service_new
-#define CEU_FUN_printf
-#define CEU_FUN_g_object_unref
-#define CEU_FUN_g_inet_socket_address_get_port
-#define CEU_FUN_g_object_ref
-#define CEU_FUN_connect_socket_service_incoming_signal
-#define CEU_FUN_strncmp
-#define CEU_FUN_PTR2REF
-#define CEU_FUN_g_socket_connection_get_remote_address
-#define CEU_FUN_g_socket_listener_add_inet_port
-#define CEU_FUN_g_socket_service_start
-#define CEU_FUN_g_inet_socket_address_get_address
-#define CEU_FUN_async_read
 #define CEU_FUN_free
-#define CEU_FUN_G_INET_SOCKET_ADDRESS
+#define CEU_FUN_g_socket_connection_get_remote_address
+#define CEU_FUN_g_object_ref
+#define CEU_FUN_g_io_stream_get_output_stream
+#define CEU_FUN_PTR2REF
+#define CEU_FUN_connect_socket_service_incoming_signal
+#define CEU_FUN_g_socket_service_start
+#define CEU_FUN_g_socket_service_new
+#define CEU_FUN_g_inet_socket_address_get_address
+#define CEU_FUN_printf
+#define CEU_FUN_async_read
+#define CEU_FUN_g_object_unref
    /* CEU_FUN_ */
 typedef struct {
-	int _1;
-} tceu__int;
+	Message* _1;
+} tceu__Message_;
 typedef struct {
 	InConnection* _1;
 } tceu__InConnection_;
 typedef struct {
-	InputMessage* _1;
-} tceu__InputMessage_;
-typedef struct {
 	s32 _1;
 } tceu__s32;
+typedef struct {
+	int _1;
+} tceu__int;
 
 
 /* class/adts definitions */
@@ -1709,7 +1712,7 @@ typedef struct {
 /* each class may define new native code that appear after its struct declaration */
 
 enum {
-CEU_NONE600,
+CEU_NONE719,
 CEU__OPTION___GSOCKETCONNECTION__REF_NIL,
 CEU__OPTION___GSOCKETCONNECTION__REF_SOME
 };
@@ -1717,9 +1720,9 @@ CEU__OPTION___GSOCKETCONNECTION__REF_SOME
 typedef struct CEU__Option___GSocketConnection__ref {
     u8 tag;
     union {
-                                        struct { /* BLOCK ln=21 */
+                                        struct { /* BLOCK ln=22 */
                                         } NIL;
-                                        struct { /* BLOCK ln=21 */
+                                        struct { /* BLOCK ln=22 */
                                           GSocketConnection* v;
                                         } SOME;
     };
@@ -1727,7 +1730,7 @@ typedef struct CEU__Option___GSocketConnection__ref {
  CEU__Option___GSocketConnection__ref;
 
 enum {
-CEU_NONE606,
+CEU_NONE725,
 CEU__OPTION___GSOCKETADDRESS__REF_NIL,
 CEU__OPTION___GSOCKETADDRESS__REF_SOME
 };
@@ -1735,9 +1738,9 @@ CEU__OPTION___GSOCKETADDRESS__REF_SOME
 typedef struct CEU__Option___GSocketAddress__ref {
     u8 tag;
     union {
-                                              struct { /* BLOCK ln=28 */
+                                              struct { /* BLOCK ln=29 */
                                               } NIL;
-                                              struct { /* BLOCK ln=28 */
+                                              struct { /* BLOCK ln=29 */
                                                 GSocketAddress* v;
                                               } SOME;
     };
@@ -1745,7 +1748,7 @@ typedef struct CEU__Option___GSocketAddress__ref {
  CEU__Option___GSocketAddress__ref;
 
 enum {
-CEU_NONE612,
+CEU_NONE731,
 CEU__OPTION___GINETADDRESS__REF_NIL,
 CEU__OPTION___GINETADDRESS__REF_SOME
 };
@@ -1753,9 +1756,9 @@ CEU__OPTION___GINETADDRESS__REF_SOME
 typedef struct CEU__Option___GInetAddress__ref {
     u8 tag;
     union {
-                                              struct { /* BLOCK ln=30 */
+                                              struct { /* BLOCK ln=31 */
                                               } NIL;
-                                              struct { /* BLOCK ln=30 */
+                                              struct { /* BLOCK ln=31 */
                                                 GInetAddress* v;
                                               } SOME;
     };
@@ -1763,7 +1766,7 @@ typedef struct CEU__Option___GInetAddress__ref {
  CEU__Option___GInetAddress__ref;
 
 enum {
-CEU_NONE618,
+CEU_NONE737,
 CEU__OPTION__CHAR__REF_NIL,
 CEU__OPTION__CHAR__REF_SOME
 };
@@ -1771,9 +1774,9 @@ CEU__OPTION__CHAR__REF_SOME
 typedef struct CEU__Option__char__ref {
     u8 tag;
     union {
-                                              struct { /* BLOCK ln=47 */
+                                              struct { /* BLOCK ln=48 */
                                               } NIL;
-                                              struct { /* BLOCK ln=47 */
+                                              struct { /* BLOCK ln=48 */
                                                 char* v;
                                               } SOME;
     };
@@ -1781,7 +1784,7 @@ typedef struct CEU__Option__char__ref {
  CEU__Option__char__ref;
 
 enum {
-CEU_NONE624,
+CEU_NONE743,
 CEU__OPTION___GINPUTSTREAM__REF_NIL,
 CEU__OPTION___GINPUTSTREAM__REF_SOME
 };
@@ -1789,21 +1792,39 @@ CEU__OPTION___GINPUTSTREAM__REF_SOME
 typedef struct CEU__Option___GInputStream__ref {
     u8 tag;
     union {
-                                              struct { /* BLOCK ln=62 */
+                                              struct { /* BLOCK ln=63 */
                                               } NIL;
-                                              struct { /* BLOCK ln=62 */
+                                              struct { /* BLOCK ln=63 */
                                                 GInputStream* v;
                                               } SOME;
     };
 }
  CEU__Option___GInputStream__ref;
 
+enum {
+CEU_NONE749,
+CEU__OPTION___GOUTPUTSTREAM__REF_NIL,
+CEU__OPTION___GOUTPUTSTREAM__REF_SOME
+};
+
+typedef struct CEU__Option___GOutputStream__ref {
+    u8 tag;
+    union {
+                                              struct { /* BLOCK ln=70 */
+                                              } NIL;
+                                              struct { /* BLOCK ln=70 */
+                                                GOutputStream* v;
+                                              } SOME;
+    };
+}
+ CEU__Option___GOutputStream__ref;
+
 typedef struct CEU_Handler {
 #ifdef CEU_ORGS
   struct tceu_org org;
 #endif
-  tceu_trl trls_[ 3 ];
-                            struct { /* BLOCK ln=20 */
+  tceu_trl trls_[ 4 ];
+                            struct { /* BLOCK ln=21 */
                               CEU__Option___GSocketConnection__ref connection;
                               union {
                                   union {
@@ -1812,20 +1833,20 @@ typedef struct CEU_Handler {
                                           union {
                                           };
                                   };
-                                struct { /* BLOCK ln=20 */
+                                struct { /* BLOCK ln=21 */
                                   union {
-                                    struct { /* BLOCK ln=23 */
-                                    u8 __fin_230_1: 1;
-                                    u8 __fin_230_2: 1;
-                                    u8 __fin_230_3: 1;
-                                    u8 __fin_230_4: 1;
-                                      CEU__Option___GInputStream__ref stream;
+                                    struct { /* BLOCK ln=24 */
+                                    u8 __fin_285_1: 1;
+                                    u8 __fin_285_2: 1;
+                                    u8 __fin_285_3: 1;
+                                    u8 __fin_285_4: 1;
+                                      CEU__Option___GOutputStream__ref output_stream;
                                       CEU__Option__char__ref buff;
+                                      CEU__Option___GInputStream__ref input_stream;
                                       CEU__Option___GInetAddress__ref inetaddr;
                                       CEU__Option___GSocketAddress__ref sockaddr;
                                       GError* conn_error;
                                       int me;
-                                      u16 port;
                                       union {
                                         union {
                                         };
@@ -1843,11 +1864,11 @@ typedef struct CEU_Handler {
                                                 union {
                                                 };
                                         };
-                                            struct { /* BLOCK ln=36 */
+                                            struct { /* BLOCK ln=37 */
                                               union {
                                               };
                                             } ;
-                                            struct { /* BLOCK ln=43 */
+                                            struct { /* BLOCK ln=44 */
                                               union {
                                               };
                                             } ;
@@ -1857,7 +1878,7 @@ typedef struct CEU_Handler {
                                                 union {
                                                 };
                                         };
-                                            struct { /* BLOCK ln=51 */
+                                            struct { /* BLOCK ln=52 */
                                               union {
                                               };
                                             } ;
@@ -1869,37 +1890,81 @@ typedef struct CEU_Handler {
                                                 union {
                                                 };
                                         };
-                                            struct { /* BLOCK ln=66 */
+                                            struct { /* BLOCK ln=68 */
                                               union {
                                               };
                                             } ;
-                                        struct { /* BLOCK ln=68 */
-                                          union {
+                                        union {
+                                                union {
+                                                };
+                                                union {
+                                                };
+                                        };
+                                            struct { /* BLOCK ln=75 */
+                                              union {
+                                              };
+                                            } ;
+                                        struct {
+                                          struct { /* BLOCK ln=78 */
                                             union {
-                                            };
-                                              struct { /* BLOCK ln=69 */
+                                              struct { /* BLOCK ln=78 */
                                                 union {
                                                   union {
-                                                    union {
-                                                      struct { /* BLOCK ln=70 */
+                                                  };
+                                                    struct { /* BLOCK ln=79 */
+                                                      Message* message_17;
+                                                      union {
                                                         union {
                                                           union {
+                                                            struct { /* BLOCK ln=80 */
+                                                              union {
+                                                                union {
+                                                                };
+                                                                  union {
+                                                                  };
+                                                              };
+                                                            } ;
                                                           };
+                                                        };
+                                                          struct { /* BLOCK ln=85 */
                                                             union {
                                                             };
-                                                        };
-                                                      } ;
-                                                    };
-                                                  };
-                                                    struct { /* BLOCK ln=75 */
-                                                      union {
+                                                          } ;
                                                       };
                                                     } ;
                                                 };
                                               } ;
-                                          };
-                                        } ;
-                                            struct { /* BLOCK ln=80 */
+                                            };
+                                          } ;
+                                          struct { /* BLOCK ln=92 */
+                                            union {
+                                              struct { /* BLOCK ln=92 */
+                                                union {
+                                                  union {
+                                                  };
+                                                    struct { /* BLOCK ln=93 */
+                                                      Message* message_18;
+                                                      union {
+                                                        union {
+                                                          union {
+                                                            struct { /* BLOCK ln=93 */
+                                                              union {
+                                                                union {
+                                                                };
+                                                                  union {
+                                                                  };
+                                                              };
+                                                            } ;
+                                                          };
+                                                        };
+                                                      };
+                                                    } ;
+                                                };
+                                              } ;
+                                            };
+                                          } ;
+                                        };
+                                            struct { /* BLOCK ln=98 */
                                               union {
                                               };
                                             } ;
@@ -1917,7 +1982,7 @@ typedef struct CEU_Handler {
 
 
 enum {
-CEU_NONE630,
+CEU_NONE755,
 CEU__OPTION___GSOCKETSERVICE__REF_NIL,
 CEU__OPTION___GSOCKETSERVICE__REF_SOME
 };
@@ -1925,9 +1990,9 @@ CEU__OPTION___GSOCKETSERVICE__REF_SOME
 typedef struct CEU__Option___GSocketService__ref {
     u8 tag;
     union {
-                              struct { /* BLOCK ln=85 */
+                              struct { /* BLOCK ln=103 */
                               } NIL;
-                              struct { /* BLOCK ln=85 */
+                              struct { /* BLOCK ln=103 */
                                 GSocketService* v;
                               } SOME;
     };
@@ -1937,7 +2002,7 @@ typedef struct CEU_Main {
 #ifdef CEU_ORGS
   struct tceu_org org;
 #endif
-  tceu_trl trls_[ 6 ];
+  tceu_trl trls_[ 7 ];
     struct { /* BLOCK ln=1 */
       tceu_pool_orgs _top_pool_0;
 ;
@@ -1951,7 +2016,7 @@ typedef struct CEU_Main {
                 union {
                   union {
                     struct { /* BLOCK ln=1 */
-                    u8 __fin_324_1: 1;
+                    u8 __fin_379_1: 1;
                       GError* error;
                       CEU__Option___GSocketService__ref service;
                       union {
@@ -1970,34 +2035,36 @@ typedef struct CEU_Main {
                         union {
                         };
                         union {
+                        };
+                        union {
                                 union {
                                 };
                                 union {
                                 };
                         };
-                            struct { /* BLOCK ln=89 */
+                            struct { /* BLOCK ln=107 */
                               union {
                               };
                             } ;
-                          struct { /* BLOCK ln=96 */
+                          struct { /* BLOCK ln=114 */
                             union {
                               union {
                               };
                             };
                           } ;
                         struct {
-                          struct { /* BLOCK ln=104 */
+                          struct { /* BLOCK ln=122 */
                             union {
-                              struct { /* BLOCK ln=104 */
+                              struct { /* BLOCK ln=122 */
                                 InConnection* conn_5;
                                 union {
                                   union {
                                   };
-                                    struct { /* BLOCK ln=105 */
+                                    struct { /* BLOCK ln=123 */
                                       union {
                                         union {
                                         };
-                                            struct { /* BLOCK ln=106 */
+                                            struct { /* BLOCK ln=124 */
                                               union {
                                               };
                                             } ;
@@ -2007,10 +2074,10 @@ typedef struct CEU_Main {
                               } ;
                             };
                           } ;
-                          struct { /* BLOCK ln=110 */
+                          struct { /* BLOCK ln=128 */
                             union {
                               union {
-                                  s32 __wclk_316;
+                                  s32 __wclk_371;
                               };
                             };
                           } ;
@@ -4898,6 +4965,7 @@ static void ceu_sys_org_free (tceu_app* app, tceu_org* org)
 
 /**********************************************************************/
 
+#ifdef CEU_DEBUG_TRAILS
 #ifdef CEU_STACK
 void ceu_stack_dump (tceu_stk* stk) {
     if (stk == NULL) {
@@ -4908,6 +4976,7 @@ void ceu_stack_dump (tceu_stk* stk) {
     printf("[%p] org=%p trls=[%d,%d]\n",
         stk, stk->org, stk->trl1, stk->trl2);
 }
+#endif
 #endif
 
 #ifdef CEU_ORGS
@@ -5217,27 +5286,33 @@ SPC(2); printf("lbl: %d\n", trl->lbl);
             }
 
             /* traverse all children */
+            while (cur != NULL) {
+                tceu_org* nxt = cur->nxt;
 
-            if (cur != NULL) {
-                tceu_stk stk_ = { stk, org, cur->parent_trl, cur->parent_trl, {} };
-                if (setjmp(stk_.jmp) != 0) {
-                    CEU_JMP_TRL->lbl = CEU_JMP_LBL;
-                    app->code(app, evt, CEU_JMP_ORG, CEU_JMP_TRL, stk, NULL);
-                    return;
-                }
-                /* SETJMP: traversing children
-                 * A child might emit a global event that awakes a par/or 
-                 * enclosing the parent organism with the call point.
-                 */
-                do {
-                    tceu_org* nxt = cur->nxt;
-                        /* save "nxt" before the call, which might kill "cur"
-                         * and reset "nxt" for the freelist */
+                tceu_stk stk_ = { stk, cur, 0, cur->n, {} };
+                int ret = setjmp(stk_.jmp);
+                if (ret == 0)
+                {
+                    /* normal flow: call cur and proceed to nxt */
                     ceu_sys_go_ex(app, evt,
                                   &stk_,
                                   cur, &cur->trls[0], NULL);
-                    cur = nxt;
-                } while (cur != NULL);
+                }
+                else if (ret == 1)
+                {
+                    /* came from clear, so all my brothers are also dead,
+                     * break the loop. before, execute the clear continuation 
+                     */
+                    CEU_JMP_TRL->lbl = CEU_JMP_LBL;
+                    app->code(app, evt, CEU_JMP_ORG, CEU_JMP_TRL, stk, NULL);
+                        /* stk: restore previous (skip &stk_) */
+                    break;
+                }
+                else /* ret == 2 */
+                {
+                    /* came from org natural termination, continue to next */
+                }
+                cur = nxt;
             }
             continue;   /* next trail after handling children */
         }
@@ -7043,7 +7118,7 @@ char* ceu_vector_tochar (tceu_vector* vector) {
 
 /* native code from the Main class */
 
-#line 6 "samples/sample1.ceu"
+#line 7 "samples/sample1.ceu"
 #include <stdio.h>
 #include <string.h>
 #define PTR2REF(x) x
@@ -7054,20 +7129,24 @@ char* ceu_vector_tochar (tceu_vector* vector) {
 enum {
     Main_Set_out_0 = 0,
     Main_Set_jmp_1 = 1,
-    Handler_Awake_READ_DONE_2 = 2,
-    Handler_Block__fin_3 = 3,
-    Handler_Block_jmp_4 = 4,
-    Class_Handler = 5,
-    Main_ParOr_sub_1_6 = 6,
-    Main_ParOr_out_7 = 7,
-    Main_ParOr_jmp_8 = 8,
-    Main_Awake_INCOMING_9 = 9,
-    Main_Awake_DT_10 = 10,
-    Main_Block__fin_11 = 11,
-    Main_Block_jmp_12 = 12,
-    Main_Block__fin_13 = 13,
-    Main_Block_jmp_14 = 14,
-    Class_Main = 15,
+    Handler_ParOr_sub_1_2 = 2,
+    Handler_ParOr_out_3 = 3,
+    Handler_ParOr_jmp_4 = 4,
+    Handler_Awake_READ_DONE_5 = 5,
+    Handler_Awake_WRITE_DONE_6 = 6,
+    Handler_Block__fin_7 = 7,
+    Handler_Block_jmp_8 = 8,
+    Class_Handler = 9,
+    Main_ParOr_sub_1_10 = 10,
+    Main_ParOr_out_11 = 11,
+    Main_ParOr_jmp_12 = 12,
+    Main_Awake_INCOMING_13 = 13,
+    Main_Awake_DT_14 = 14,
+    Main_Block__fin_15 = 15,
+    Main_Block_jmp_16 = 16,
+    Main_Block__fin_17 = 17,
+    Main_Block_jmp_18 = 18,
+    Class_Main = 19,
 
 };
 
@@ -7504,6 +7583,85 @@ GInputStream* CEU__OPTION___GINPUTSTREAM__REF_unpack (CEU__Option___GInputStream
 #endif
 
 
+void CEU__Option___GOutputStream__ref_free (void* pool, CEU__Option___GOutputStream__ref* me);
+
+CEU__Option___GOutputStream__ref* CEU__OPTION___GOUTPUTSTREAM__REF_NIL_assert (tceu_app* app, CEU__Option___GOutputStream__ref* me, char* file, int line) {
+    ceu_out_assert_msg_ex(me->tag == CEU__OPTION___GOUTPUTSTREAM__REF_NIL, "invalid tag", file, line);
+    return me;
+}
+
+void CEU__OPTION___GOUTPUTSTREAM__REF_NIL_free (void* pool, CEU__Option___GOutputStream__ref* me) {
+    /* FREE (before ok_killed) */
+#if    defined(CEU_ADTS_NEWS_POOL) && !defined(CEU_ADTS_NEWS_MALLOC)
+            ceu_pool_free(pool, (void*)me);
+#elif  defined(CEU_ADTS_NEWS_POOL) &&  defined(CEU_ADTS_NEWS_MALLOC)
+            if (pool == NULL) {
+                ceu_out_realloc(me, 0);
+            } else {
+                ceu_pool_free(pool, (void*)me);
+            }
+#elif !defined(CEU_ADTS_NEWS_POOL) &&  defined(CEU_ADTS_NEWS_MALLOC)
+            ceu_out_realloc(me, 0);
+#endif
+}
+
+CEU__Option___GOutputStream__ref* CEU__OPTION___GOUTPUTSTREAM__REF_SOME_assert (tceu_app* app, CEU__Option___GOutputStream__ref* me, char* file, int line) {
+    ceu_out_assert_msg_ex(me->tag == CEU__OPTION___GOUTPUTSTREAM__REF_SOME, "invalid tag", file, line);
+    return me;
+}
+
+void CEU__OPTION___GOUTPUTSTREAM__REF_SOME_free (void* pool, CEU__Option___GOutputStream__ref* me) {
+    /* FREE (before ok_killed) */
+#if    defined(CEU_ADTS_NEWS_POOL) && !defined(CEU_ADTS_NEWS_MALLOC)
+            ceu_pool_free(pool, (void*)me);
+#elif  defined(CEU_ADTS_NEWS_POOL) &&  defined(CEU_ADTS_NEWS_MALLOC)
+            if (pool == NULL) {
+                ceu_out_realloc(me, 0);
+            } else {
+                ceu_pool_free(pool, (void*)me);
+            }
+#elif !defined(CEU_ADTS_NEWS_POOL) &&  defined(CEU_ADTS_NEWS_MALLOC)
+            ceu_out_realloc(me, 0);
+#endif
+}
+
+void CEU__Option___GOutputStream__ref_free (void* pool, CEU__Option___GOutputStream__ref* me) {
+    switch (me->tag) {
+        case CEU__OPTION___GOUTPUTSTREAM__REF_NIL:
+            CEU__OPTION___GOUTPUTSTREAM__REF_NIL_free(pool, me);
+            break;
+        case CEU__OPTION___GOUTPUTSTREAM__REF_SOME:
+            CEU__OPTION___GOUTPUTSTREAM__REF_SOME_free(pool, me);
+            break;
+#ifdef CEU_DEBUG
+        default:
+            ceu_out_assert_msg(0, "invalid tag");
+#endif
+    }
+}
+
+CEU__Option___GOutputStream__ref CEU__OPTION___GOUTPUTSTREAM__REF_pack (GOutputStream* ptr) {
+    CEU__Option___GOutputStream__ref ret;
+    if (ptr == NULL) {
+        ret.tag = CEU__OPTION___GOUTPUTSTREAM__REF_NIL;
+    } else {
+        ret.tag = CEU__OPTION___GOUTPUTSTREAM__REF_SOME;
+        ret.SOME.v = ptr;
+    }
+    return ret;
+}
+#if 0
+// TODO: now requires explicit conversions
+GOutputStream* CEU__OPTION___GOUTPUTSTREAM__REF_unpack (CEU__Option___GOutputStream__ref me) {
+    if (me.tag == CEU__OPTION___GOUTPUTSTREAM__REF_NIL) {
+        return NULL;
+    } else {
+        return me.SOME.v;
+    }
+}
+#endif
+
+
 void CEU__Option___GSocketService__ref_free (void* pool, CEU__Option___GSocketService__ref* me);
 
 CEU__Option___GSocketService__ref* CEU__OPTION___GSOCKETSERVICE__REF_NIL_assert (tceu_app* app, CEU__Option___GSocketService__ref* me, char* file, int line) {
@@ -7612,45 +7770,45 @@ static void ceu_stack_clr () {
 
 #ifdef CEU_ORGS
 static void _ceu_pre_1 (tceu_app* _ceu_app, tceu_org* __ceu_this) {
-/* NODE: BlockI 385 */
-/* NODE: Stmts 389 */
+/* NODE: BlockI 445 */
+/* NODE: Stmts 449 */
 
-#line 21 "samples/sample1.ceu"
-    {/* NODE: Dcl_adt 600 */
-/* NODE: Dcl_var 387 */
+#line 22 "samples/sample1.ceu"
+    {/* NODE: Dcl_adt 719 */
+/* NODE: Dcl_var 447 */
 
-#line 21 "samples/sample1.ceu"
+#line 22 "samples/sample1.ceu"
         (((CEU_Handler*)__ceu_this)->connection).tag = CEU__OPTION___GSOCKETCONNECTION__REF_NIL;
     
-#line 21 "samples/sample1.ceu"
+#line 22 "samples/sample1.ceu"
     }}
 
 #endif
 
 #ifdef CEU_ORGS
-static void _ceu_constr_308 (tceu_app* _ceu_app, tceu_org* __ceu_this, tceu_org* _ceu_org) {
-/* NODE: Dcl_constr 308 */
-/* NODE: Block 307 */
+static void _ceu_constr_363 (tceu_app* _ceu_app, tceu_org* __ceu_this, tceu_org* _ceu_org) {
+/* NODE: Dcl_constr 363 */
+/* NODE: Block 362 */
 
-#line 106 "samples/sample1.ceu"
-    {/* NODE: Stmts 306 */
+#line 124 "samples/sample1.ceu"
+    {/* NODE: Stmts 361 */
 
-#line 106 "samples/sample1.ceu"
-    {/* NODE: Set 554 */
+#line 124 "samples/sample1.ceu"
+    {/* NODE: Set 673 */
 
-#line 106 "samples/sample1.ceu"
-/* SET: . *//* NODE: Op1_& 304 */
+#line 124 "samples/sample1.ceu"
+/* SET: . *//* NODE: Op1_& 359 */
 
-#line 106 "samples/sample1.ceu"
+#line 124 "samples/sample1.ceu"
     (((*((CEU_Handler*)__ceu_this)).connection)) = (CEU__OPTION___GSOCKETCONNECTION__REF_pack(PTR2REF((((*(((CEU_Main*)_ceu_org)->conn_5)).connection)))));
-#line 106 "samples/sample1.ceu"
+#line 124 "samples/sample1.ceu"
     }
-#line 106 "samples/sample1.ceu"
-/* CLEAR: Block (106) */
-#line 106 "samples/sample1.ceu"
+#line 124 "samples/sample1.ceu"
+/* CLEAR: Block (124) */
+#line 124 "samples/sample1.ceu"
     if (0) {
 
-#line 106 "samples/sample1.ceu"
+#line 124 "samples/sample1.ceu"
         }   /* opened in "if (0)" */
 }       /* opened in Block_pre */
 }
@@ -7712,16 +7870,16 @@ printf("OK : lbl=%d : org=%p\n", _ceu_lbl, _ceu_org);
 #endif
 
     switch (_ceu_lbl) {
-        /* NODE: Root 337 */
+        /* NODE: Root 392 */
 /* NODE: Dcl_cls 0 */
 
 #line 1 "samples/sample1.ceu"
-case Class_Main:;/* NODE: Block 592 */
+case Class_Main:;/* NODE: Block 711 */
 
 #line 1 "samples/sample1.ceu"
     /*  FINALIZE */
-_ceu_org->trls[ 5 ].evt = CEU_IN__CLEAR;
-_ceu_org->trls[ 5 ].lbl = Main_Block__fin_13;
+_ceu_org->trls[ 6 ].evt = CEU_IN__CLEAR;
+_ceu_org->trls[ 6 ].lbl = Main_Block__fin_17;
 
 #line 1 "samples/sample1.ceu"
     {
@@ -7740,373 +7898,384 @@ _ceu_org->trls[ 0 ].org = NULL;
 
 #line 1 "samples/sample1.ceu"
     _ceu_trl = &_ceu_org->trls[ 1 ];
-/* NODE: Stmts 591 */
+/* NODE: Stmts 710 */
 
 #line 1 "samples/sample1.ceu"
-    {/* NODE: Block 343 */
+    {/* NODE: Block 398 */
 
 #line 1 "samples/sample1.ceu"
-    {/* NODE: Stmts 342 */
+    {/* NODE: Stmts 397 */
 
 #line 1 "samples/sample1.ceu"
-    {/* NODE: Dcl_var 339 */
-/* NODE: SetBlock 341 */
-/* NODE: Block 335 */
+    {/* NODE: Dcl_var 394 */
+/* NODE: SetBlock 396 */
+/* NODE: Block 390 */
 
 #line 1 "samples/sample1.ceu"
-    {/* NODE: Stmts 334 */
+    {/* NODE: Stmts 389 */
 
 #line 1 "samples/sample1.ceu"
-    {/* NODE: Stmts 331 */
+    {/* NODE: Stmts 386 */
 
 #line 1 "samples/sample1.ceu"
-    {/* NODE: Block 324 */
+    {/* NODE: Block 379 */
 
 #line 1 "samples/sample1.ceu"
     /*  FINALIZE */
-_ceu_org->trls[ 4 ].evt = CEU_IN__CLEAR;
-_ceu_org->trls[ 4 ].lbl = Main_Block__fin_11;
+_ceu_org->trls[ 5 ].evt = CEU_IN__CLEAR;
+_ceu_org->trls[ 5 ].lbl = Main_Block__fin_15;
 
 #line 1 "samples/sample1.ceu"
-    ((CEU_Main*)_ceu_org)->__fin_324_1 = 0;
+    ((CEU_Main*)_ceu_org)->__fin_379_1 = 0;
 #line 1 "samples/sample1.ceu"
     {
 #line 1 "samples/sample1.ceu"
     (((CEU_Main*)_ceu_org)->service).tag = CEU__OPTION___GSOCKETSERVICE__REF_NIL;
-/* NODE: Stmts 322 */
-
-#line 1 "./config.ceu"
-    {/* NODE: Stmts 346 */
-
-#line 1 "./config.ceu"
-    {/* NODE: Dcl_nat 345 */
-
-#line 1 "./config.ceu"
-    }/* NODE: Stmts 367 */
-
-#line 3 "./config.ceu"
-    {/* NODE: Dcl_nat 347 */
-/* NODE: Dcl_nat 348 */
-/* NODE: Dcl_nat 349 */
-/* NODE: Dcl_nat 350 */
-/* NODE: Dcl_nat 351 */
-/* NODE: Dcl_nat 352 */
-/* NODE: Dcl_nat 353 */
-/* NODE: Dcl_nat 354 */
-/* NODE: Dcl_nat 355 */
-/* NODE: Dcl_nat 356 */
-/* NODE: Dcl_nat 357 */
-/* NODE: Dcl_nat 358 */
-/* NODE: Dcl_nat 359 */
-/* NODE: Dcl_nat 360 */
-/* NODE: Dcl_nat 361 */
-/* NODE: Dcl_nat 362 */
-/* NODE: Dcl_nat 363 */
-/* NODE: Dcl_nat 364 */
-/* NODE: Dcl_nat 365 */
-/* NODE: Dcl_nat 366 */
-
-#line 3 "./config.ceu"
-    }/* NODE: Stmts 371 */
-
-#line 3 "samples/sample1.ceu"
-    {/* NODE: Dcl_ext 370 */
-
-#line 3 "samples/sample1.ceu"
-    }/* NODE: Stmts 375 */
-
-#line 4 "samples/sample1.ceu"
-    {/* NODE: Dcl_ext 374 */
-
-#line 4 "samples/sample1.ceu"
-    }/* NODE: Host 6 */
 /* NODE: Stmts 377 */
 
-#line 14 "samples/sample1.ceu"
-    {/* NODE: Dcl_nat 376 */
+#line 1 "./config.ceu"
+    {/* NODE: Stmts 401 */
 
-#line 14 "samples/sample1.ceu"
-    }/* NODE: Stmts 485 */
+#line 1 "./config.ceu"
+    {/* NODE: Dcl_nat 400 */
 
-#line 20 "samples/sample1.ceu"
+#line 1 "./config.ceu"
+    }/* NODE: Stmts 423 */
+
+#line 3 "./config.ceu"
+    {/* NODE: Dcl_nat 402 */
+/* NODE: Dcl_nat 403 */
+/* NODE: Dcl_nat 404 */
+/* NODE: Dcl_nat 405 */
+/* NODE: Dcl_nat 406 */
+/* NODE: Dcl_nat 407 */
+/* NODE: Dcl_nat 408 */
+/* NODE: Dcl_nat 409 */
+/* NODE: Dcl_nat 410 */
+/* NODE: Dcl_nat 411 */
+/* NODE: Dcl_nat 412 */
+/* NODE: Dcl_nat 413 */
+/* NODE: Dcl_nat 414 */
+/* NODE: Dcl_nat 415 */
+/* NODE: Dcl_nat 416 */
+/* NODE: Dcl_nat 417 */
+/* NODE: Dcl_nat 418 */
+/* NODE: Dcl_nat 419 */
+/* NODE: Dcl_nat 420 */
+/* NODE: Dcl_nat 421 */
+/* NODE: Dcl_nat 422 */
+
+#line 3 "./config.ceu"
+    }/* NODE: Stmts 427 */
+
+#line 3 "samples/sample1.ceu"
+    {/* NODE: Dcl_ext 426 */
+
+#line 3 "samples/sample1.ceu"
+    }/* NODE: Stmts 431 */
+
+#line 4 "samples/sample1.ceu"
+    {/* NODE: Dcl_ext 430 */
+
+#line 4 "samples/sample1.ceu"
+    }/* NODE: Stmts 435 */
+
+#line 5 "samples/sample1.ceu"
+    {/* NODE: Dcl_ext 434 */
+
+#line 5 "samples/sample1.ceu"
+    }/* NODE: Host 8 */
+/* NODE: Stmts 437 */
+
+#line 15 "samples/sample1.ceu"
+    {/* NODE: Dcl_nat 436 */
+
+#line 15 "samples/sample1.ceu"
+    }/* NODE: Stmts 604 */
+
+#line 21 "samples/sample1.ceu"
     {
-#line 20 "samples/sample1.ceu"
-    }/* NODE: Stmts 488 */
+#line 21 "samples/sample1.ceu"
+    }/* NODE: Stmts 607 */
 
-#line 84 "samples/sample1.ceu"
-    {/* NODE: Dcl_var 487 */
+#line 102 "samples/sample1.ceu"
+    {/* NODE: Dcl_var 606 */
 
-#line 84 "samples/sample1.ceu"
-    }/* NODE: Stmts 491 */
+#line 102 "samples/sample1.ceu"
+    }/* NODE: Stmts 610 */
 
-#line 85 "samples/sample1.ceu"
-    {/* NODE: Dcl_adt 630 */
-/* NODE: Dcl_var 490 */
+#line 103 "samples/sample1.ceu"
+    {/* NODE: Dcl_adt 755 */
+/* NODE: Dcl_var 609 */
 
-#line 85 "samples/sample1.ceu"
-    }/* NODE: Finalize 252 */
+#line 103 "samples/sample1.ceu"
+    }/* NODE: Finalize 307 */
 
-#line 86 "samples/sample1.ceu"
-    ((CEU_Main*)_ceu_org)->__fin_324_1 = 1;/* NODE: Set 492 */
+#line 104 "samples/sample1.ceu"
+    ((CEU_Main*)_ceu_org)->__fin_379_1 = 1;/* NODE: Set 611 */
 
-#line 87 "samples/sample1.ceu"
-/* SET: service *//* NODE: Op1_& 240 */
+#line 105 "samples/sample1.ceu"
+/* SET: service *//* NODE: Op1_& 295 */
 
-#line 87 "samples/sample1.ceu"
-    (((CEU_Main*)_ceu_org)->service) = (CEU__OPTION___GSOCKETSERVICE__REF_pack(g_socket_service_new()));/* NODE: CallStmt 265 */
+#line 105 "samples/sample1.ceu"
+    (((CEU_Main*)_ceu_org)->service) = (CEU__OPTION___GSOCKETSERVICE__REF_pack(g_socket_service_new()));/* NODE: CallStmt 320 */
 
-#line 92 "samples/sample1.ceu"
-    g_socket_listener_add_inet_port(((GSocketListener*)((CEU__OPTION___GSOCKETSERVICE__REF_SOME_assert(_ceu_app, (&((CEU_Main*)_ceu_org)->service),__FILE__,__LINE__)->SOME.v))),1500,NULL,(&((CEU_Main*)_ceu_org)->error));/* NODE: If 494 */
+#line 110 "samples/sample1.ceu"
+    g_socket_listener_add_inet_port(((GSocketListener*)((CEU__OPTION___GSOCKETSERVICE__REF_SOME_assert(_ceu_app, (&((CEU_Main*)_ceu_org)->service),__FILE__,__LINE__)->SOME.v))),1500,NULL,(&((CEU_Main*)_ceu_org)->error));/* NODE: If 613 */
 
-#line 95 "samples/sample1.ceu"
+#line 113 "samples/sample1.ceu"
     if (((((CEU_Main*)_ceu_org)->error)!=NULL)) {
-/* NODE: Block 279 */
+/* NODE: Block 334 */
 
-#line 96 "samples/sample1.ceu"
-    {/* NODE: Stmts 278 */
+#line 114 "samples/sample1.ceu"
+    {/* NODE: Stmts 333 */
 
-#line 96 "samples/sample1.ceu"
-    {/* NODE: CallStmt 275 */
+#line 114 "samples/sample1.ceu"
+    {/* NODE: CallStmt 330 */
 
-#line 96 "samples/sample1.ceu"
-    printf("Error: %s\n",(((*(((CEU_Main*)_ceu_org)->error)).message)));/* NODE: Stmts 500 */
+#line 114 "samples/sample1.ceu"
+    printf("Error: %s\n",(((*(((CEU_Main*)_ceu_org)->error)).message)));/* NODE: Stmts 619 */
 
-#line 97 "samples/sample1.ceu"
-    {/* NODE: Set 498 */
+#line 115 "samples/sample1.ceu"
+    {/* NODE: Set 617 */
 
-#line 97 "samples/sample1.ceu"
-/* SET: _ret *//* NODE: NUMBER 276 */
+#line 115 "samples/sample1.ceu"
+/* SET: _ret *//* NODE: NUMBER 331 */
 
-#line 97 "samples/sample1.ceu"
+#line 115 "samples/sample1.ceu"
     (((CEU_Main*)_ceu_org)->_ret_1) = 0;
-#line 97 "samples/sample1.ceu"
+#line 115 "samples/sample1.ceu"
     #ifdef CEU_RET
     _ceu_app->ret = (((CEU_Main*)_ceu_org)->_ret_1);
 #endif
-/* NODE: Escape 499 */
+/* NODE: Escape 618 */
 
-#line 97 "samples/sample1.ceu"
+#line 115 "samples/sample1.ceu"
     _ceu_lbl = Main_Set_out_0;
 goto _CEU_GOTO_;
 
-#line 97 "samples/sample1.ceu"
+#line 115 "samples/sample1.ceu"
     }
-#line 96 "samples/sample1.ceu"
+#line 114 "samples/sample1.ceu"
     }
-#line 96 "samples/sample1.ceu"
-/* CLEAR: Block (96) */
-#line 96 "samples/sample1.ceu"
+#line 114 "samples/sample1.ceu"
+/* CLEAR: Block (114) */
+#line 114 "samples/sample1.ceu"
     if (0) {
 
-#line 96 "samples/sample1.ceu"
+#line 114 "samples/sample1.ceu"
         }   /* opened in "if (0)" */
 }       /* opened in Block_pre */
 } else {
-/* NODE: Nothing 493 */
+/* NODE: Nothing 612 */
 }
-/* NODE: CallStmt 287 */
+/* NODE: CallStmt 342 */
 
-#line 100 "samples/sample1.ceu"
-    connect_socket_service_incoming_signal(((CEU__OPTION___GSOCKETSERVICE__REF_SOME_assert(_ceu_app, (&((CEU_Main*)_ceu_org)->service),__FILE__,__LINE__)->SOME.v)));/* NODE: CallStmt 294 */
+#line 118 "samples/sample1.ceu"
+    connect_socket_service_incoming_signal(((CEU__OPTION___GSOCKETSERVICE__REF_SOME_assert(_ceu_app, (&((CEU_Main*)_ceu_org)->service),__FILE__,__LINE__)->SOME.v)));/* NODE: CallStmt 349 */
 
-#line 101 "samples/sample1.ceu"
-    g_socket_service_start(((CEU__OPTION___GSOCKETSERVICE__REF_SOME_assert(_ceu_app, (&((CEU_Main*)_ceu_org)->service),__FILE__,__LINE__)->SOME.v)));/* NODE: ParOr 319 */
+#line 119 "samples/sample1.ceu"
+    g_socket_service_start(((CEU__OPTION___GSOCKETSERVICE__REF_SOME_assert(_ceu_app, (&((CEU_Main*)_ceu_org)->service),__FILE__,__LINE__)->SOME.v)));/* NODE: ParOr 374 */
 
-#line 103 "samples/sample1.ceu"
+#line 121 "samples/sample1.ceu"
 /* ParOr: spawn subs */
-#line 103 "samples/sample1.ceu"
+#line 121 "samples/sample1.ceu"
     {
-    tceu_stk stk_ = { _ceu_stk, _ceu_org, 1, 3, {} };
-    if (setjmp(stk_.jmp) != 0) {
+    tceu_stk stk_ = { _ceu_stk, _ceu_org, 1, 4, {} };
+    int ret = setjmp(stk_.jmp);
+    if (ret != 0) {
+        /* can only come from CLEAR */
+        ceu_out_assert(ret == 1);
+        /* This trail has been aborted from the call below.
+         * It was the lowest aborted trail in the stack, so the abortion code 
+         * "CLEAR" did a "longjmp" to here to unwind the whole stack.
+         * Let's go to the continuation of the abortion received in 
+         * "CEU_JMP_LBL/ORG".
+         */
 #ifdef CEU_ORGS
         _ceu_org = CEU_JMP_ORG;
 #endif
         _ceu_trl = CEU_JMP_TRL;
 
-#line 103 "samples/sample1.ceu"
+#line 121 "samples/sample1.ceu"
     _ceu_lbl = CEU_JMP_LBL;
 goto _CEU_GOTO_;
 
-#line 103 "samples/sample1.ceu"
+#line 121 "samples/sample1.ceu"
         }
 
-    /* SETJMP: starting trails in a par
-     * The 1st trail might abort an enclosing par/or, or emit something that 
-     * does.
-     */
-
-#line 103 "samples/sample1.ceu"
-        _ceu_org->trls[ 1 ].lbl = Main_ParOr_sub_1_6;
+#line 121 "samples/sample1.ceu"
+        _ceu_org->trls[ 1 ].lbl = Main_ParOr_sub_1_10;
     ceu_app_go(_ceu_app,NULL,_ceu_org,
                &_ceu_org->trls[ 1 ],
                &stk_,NULL);
 
-#line 103 "samples/sample1.ceu"
+#line 121 "samples/sample1.ceu"
         _ceu_trl = &_ceu_org->trls[ 2 ];
 
-#line 103 "samples/sample1.ceu"
+#line 121 "samples/sample1.ceu"
     }
-/* NODE: Block 318 */
+/* NODE: Block 373 */
 
-#line 110 "samples/sample1.ceu"
-    {/* NODE: Stmts 317 */
+#line 128 "samples/sample1.ceu"
+    {/* NODE: Stmts 372 */
 
-#line 110 "samples/sample1.ceu"
-    {/* NODE: Stmts 585 */
+#line 128 "samples/sample1.ceu"
+    {/* NODE: Stmts 704 */
 
-#line 110 "samples/sample1.ceu"
-    {/* NODE: Nothing 559 */
-/* NODE: Await 316 */
+#line 128 "samples/sample1.ceu"
+    {/* NODE: Nothing 678 */
+/* NODE: Await 371 */
 
-#line 110 "samples/sample1.ceu"
-    ceu_out_wclock(_ceu_app, (s32)((s32)10000000), &((CEU_Main*)_ceu_org)->__wclk_316, NULL);
+#line 128 "samples/sample1.ceu"
+    ceu_out_wclock(_ceu_app, (s32)((s32)30000000), &((CEU_Main*)_ceu_org)->__wclk_371, NULL);
 
-#line 110 "samples/sample1.ceu"
-    _CEU_NO_316_:
-if (0) { goto _CEU_NO_316_; /* avoids "not used" warning */ }
+#line 128 "samples/sample1.ceu"
+    _CEU_NO_371_:
+if (0) { goto _CEU_NO_371_; /* avoids "not used" warning */ }
 
-#line 110 "samples/sample1.ceu"
+#line 128 "samples/sample1.ceu"
     _ceu_trl->evt = CEU_IN__WCLOCK;
-_ceu_trl->lbl = Main_Awake_DT_10;
+_ceu_trl->lbl = Main_Awake_DT_14;
 _ceu_trl->seqno = _ceu_app->seqno;
 
-#line 110 "samples/sample1.ceu"
+#line 128 "samples/sample1.ceu"
     return;
 
-case Main_Awake_DT_10:;
+case Main_Awake_DT_14:;
 
-#line 110 "samples/sample1.ceu"
+#line 128 "samples/sample1.ceu"
         /* subtract time and check if I have to awake */
     {
         s32** __ceu_casted = (s32**)_ceu_evt->param;
-        if (!ceu_out_wclock(_ceu_app, *(*__ceu_casted), NULL, &((CEU_Main*)_ceu_org)->__wclk_316) ) {
-            goto _CEU_NO_316_;
+        if (!ceu_out_wclock(_ceu_app, *(*__ceu_casted), NULL, &((CEU_Main*)_ceu_org)->__wclk_371) ) {
+            goto _CEU_NO_371_;
         }
     }
 
-#line 110 "samples/sample1.ceu"
+#line 128 "samples/sample1.ceu"
     #ifdef CEU_DEBUG_TRAILS
 #ifndef CEU_OS
 printf("\tOK!\n");
 #endif
 #endif
-/* NODE: Nothing 678 */
-/* NODE: Nothing 679 */
+/* NODE: Nothing 811 */
+/* NODE: Nothing 812 */
 
-#line 110 "samples/sample1.ceu"
+#line 128 "samples/sample1.ceu"
     }
-#line 110 "samples/sample1.ceu"
+#line 128 "samples/sample1.ceu"
     }
-#line 110 "samples/sample1.ceu"
-/* CLEAR: Block (110) */
-#line 110 "samples/sample1.ceu"
+#line 128 "samples/sample1.ceu"
+/* CLEAR: Block (128) */
+#line 128 "samples/sample1.ceu"
     if (0) {
 
-#line 110 "samples/sample1.ceu"
+#line 128 "samples/sample1.ceu"
         }   /* opened in "if (0)" */
 }       /* opened in Block_pre */
 
-#line 103 "samples/sample1.ceu"
+#line 121 "samples/sample1.ceu"
 /* PAROR JOIN */
-#line 103 "samples/sample1.ceu"
-    _ceu_lbl = Main_ParOr_out_7;
+#line 121 "samples/sample1.ceu"
+    _ceu_lbl = Main_ParOr_out_11;
 goto _CEU_GOTO_;
 
-#line 103 "samples/sample1.ceu"
-case Main_ParOr_sub_1_6:;/* NODE: Block 314 */
+#line 121 "samples/sample1.ceu"
+case Main_ParOr_sub_1_10:;/* NODE: Block 369 */
 
-#line 104 "samples/sample1.ceu"
-    {/* NODE: Stmts 313 */
+#line 122 "samples/sample1.ceu"
+    {/* NODE: Stmts 368 */
 
-#line 104 "samples/sample1.ceu"
-    {/* NODE: Block 508 */
+#line 122 "samples/sample1.ceu"
+    {/* NODE: Block 627 */
 
-#line 104 "samples/sample1.ceu"
-    {/* NODE: Stmts 507 */
+#line 122 "samples/sample1.ceu"
+    {/* NODE: Stmts 626 */
 
-#line 104 "samples/sample1.ceu"
-    {/* NODE: Stmts 506 */
+#line 122 "samples/sample1.ceu"
+    {/* NODE: Stmts 625 */
 
-#line 104 "samples/sample1.ceu"
-    {/* NODE: Dcl_var 674 */
+#line 122 "samples/sample1.ceu"
+    {/* NODE: Dcl_var 807 */
 
-#line 104 "samples/sample1.ceu"
-    }/* NODE: Loop 505 */
+#line 122 "samples/sample1.ceu"
+    }/* NODE: Loop 624 */
 
-#line 104 "samples/sample1.ceu"
+#line 122 "samples/sample1.ceu"
     for (;;) {
-/* NODE: Block 311 */
+/* NODE: Block 366 */
 
-#line 105 "samples/sample1.ceu"
-    {/* NODE: Stmts 310 */
+#line 123 "samples/sample1.ceu"
+    {/* NODE: Stmts 365 */
 
-#line 105 "samples/sample1.ceu"
-    {/* NODE: Stmts 549 */
+#line 123 "samples/sample1.ceu"
+    {/* NODE: Stmts 668 */
 
-#line 104 "samples/sample1.ceu"
-    {/* NODE: Nothing 511 */
-/* NODE: Set 510 */
+#line 122 "samples/sample1.ceu"
+    {/* NODE: Nothing 630 */
+/* NODE: Set 629 */
 
-#line 104 "samples/sample1.ceu"
-/* SET: table: 0xb7b750 *//* NODE: Await 501 */
+#line 122 "samples/sample1.ceu"
+/* SET: table: 0xc4aeb0 *//* NODE: Await 620 */
 
-#line 104 "samples/sample1.ceu"
-    _CEU_NO_501_:
-if (0) { goto _CEU_NO_501_; /* avoids "not used" warning */ }
+#line 122 "samples/sample1.ceu"
+    _CEU_NO_620_:
+if (0) { goto _CEU_NO_620_; /* avoids "not used" warning */ }
 
-#line 104 "samples/sample1.ceu"
+#line 122 "samples/sample1.ceu"
     _ceu_trl->evt = CEU_IN_INCOMING;
-_ceu_trl->lbl = Main_Awake_INCOMING_9;
+_ceu_trl->lbl = Main_Awake_INCOMING_13;
 _ceu_trl->seqno = _ceu_app->seqno;
 
-#line 104 "samples/sample1.ceu"
+#line 122 "samples/sample1.ceu"
     return;
 
-case Main_Awake_INCOMING_9:;
+case Main_Awake_INCOMING_13:;
 
-#line 104 "samples/sample1.ceu"
+#line 122 "samples/sample1.ceu"
     #ifdef CEU_DEBUG_TRAILS
 #ifndef CEU_OS
 printf("\tOK!\n");
 #endif
 #endif
 
-#line 104 "samples/sample1.ceu"
+#line 122 "samples/sample1.ceu"
     {
 
-#line 104 "samples/sample1.ceu"
+#line 122 "samples/sample1.ceu"
         tceu__InConnection_** __ceu_casted = (tceu__InConnection_**) _ceu_evt->param;
 
-#line 104 "samples/sample1.ceu"
+#line 122 "samples/sample1.ceu"
         (((CEU_Main*)_ceu_org)->conn_5) = ((*(__ceu_casted))->_1);
 }
-/* NODE: Nothing 675 */
-/* NODE: Nothing 676 */
+/* NODE: Nothing 808 */
+/* NODE: Nothing 809 */
 
-#line 104 "samples/sample1.ceu"
-    }/* NODE: Spawn 309 */
+#line 122 "samples/sample1.ceu"
+    }/* NODE: Spawn 364 */
 
-#line 105 "samples/sample1.ceu"
+#line 123 "samples/sample1.ceu"
     /*{*/
-    tceu_org* __ceu_new_309;
+    tceu_org* __ceu_new_364;
 
-#line 105 "samples/sample1.ceu"
-        __ceu_new_309 = (tceu_org*) ceu_out_realloc(NULL, sizeof(CEU_Handler));
+#line 123 "samples/sample1.ceu"
+        __ceu_new_364 = (tceu_org*) ceu_out_realloc(NULL, sizeof(CEU_Handler));
 
-#line 105 "samples/sample1.ceu"
-        if (__ceu_new_309 != NULL) {
+#line 123 "samples/sample1.ceu"
+        if (__ceu_new_364 != NULL) {
 
-#line 105 "samples/sample1.ceu"
+#line 123 "samples/sample1.ceu"
     #ifdef CEU_ORGS_NEWS_POOL
-        __ceu_new_309->pool = &(((CEU_Main*)_ceu_org)->_top_pool_0);
+        __ceu_new_364->pool = &(((CEU_Main*)_ceu_org)->_top_pool_0);
 #endif
 
-#line 105 "samples/sample1.ceu"
+#line 123 "samples/sample1.ceu"
 /* start org: dyn */
-#line 105 "samples/sample1.ceu"
+#line 123 "samples/sample1.ceu"
         /* resets org memory and starts org.trail[0]=Class_XXX */
     /* TODO: BUG: _ceu_org is not necessarily the parent for pool allocations */
-    ceu_out_org_init(_ceu_app, ((tceu_org*) &(*((CEU_Handler*)__ceu_new_309))),3,Class_Handler,
+    ceu_out_org_init(_ceu_app, ((tceu_org*) &(*((CEU_Handler*)__ceu_new_364))),4,Class_Handler,
                      1,
                      1,
                      (((CEU_Main*)_ceu_org)->_top_pool_0).parent_org,(((CEU_Main*)_ceu_org)->_top_pool_0).parent_trl);
@@ -8114,84 +8283,90 @@ printf("\tOK!\n");
  * are all together there. When we have separate trls for pools, we'll have to 
  * indirectly access the offset in the interface. */
 
-#line 105 "samples/sample1.ceu"
-        _ceu_pre_1(_ceu_app, ((tceu_org*) &(*((CEU_Handler*)__ceu_new_309))));
+#line 123 "samples/sample1.ceu"
+        _ceu_pre_1(_ceu_app, ((tceu_org*) &(*((CEU_Handler*)__ceu_new_364))));
 
-#line 105 "samples/sample1.ceu"
-        _ceu_constr_308(_ceu_app, ((tceu_org*) &(*((CEU_Handler*)__ceu_new_309))), _ceu_org);
+#line 123 "samples/sample1.ceu"
+        _ceu_constr_363(_ceu_app, ((tceu_org*) &(*((CEU_Handler*)__ceu_new_364))), _ceu_org);
 
-#line 105 "samples/sample1.ceu"
+#line 123 "samples/sample1.ceu"
     {
-    tceu_stk stk_ = { _ceu_stk, ((tceu_org*) &(*((CEU_Handler*)__ceu_new_309))), 0, ((tceu_org*) &(*((CEU_Handler*)__ceu_new_309)))->n, {} };
-    if (setjmp(stk_.jmp) != 0) {
+    tceu_stk stk_ = { _ceu_stk, ((tceu_org*) &(*((CEU_Handler*)__ceu_new_364))), 0, ((tceu_org*) &(*((CEU_Handler*)__ceu_new_364)))->n, {} };
+    int ret = setjmp(stk_.jmp);
+    switch (ret) {
+        case 0:
+            /* normal flow: spawn */
+            ceu_app_go(_ceu_app,NULL,
+                       ((tceu_org*) &(*((CEU_Handler*)__ceu_new_364))), &((tceu_org*) &(*((CEU_Handler*)__ceu_new_364)))->trls[0],
+                       &stk_, NULL);
+            break;
+        case 1:
+            /* came from clear, proceed to its continuation */
 #ifdef CEU_ORGS
-        _ceu_org = CEU_JMP_ORG;
+            _ceu_org = CEU_JMP_ORG;
 #endif
-        _ceu_trl = CEU_JMP_TRL;
+            _ceu_trl = CEU_JMP_TRL;
 
-#line 105 "samples/sample1.ceu"
+#line 123 "samples/sample1.ceu"
     _ceu_lbl = CEU_JMP_LBL;
 goto _CEU_GOTO_;
 
-#line 105 "samples/sample1.ceu"
-        }
+#line 123 "samples/sample1.ceu"
+                break;
+        case 2:
+            /* came from org natural termination,
+             * unset the org variable, continue executing normally */
 
-    /* SETJMP: spawning a new org
-     * The new org might emit a global event that awakes a par/or enclosing the 
-     * call point.
-     */
-    ceu_app_go(_ceu_app,NULL,
-               ((tceu_org*) &(*((CEU_Handler*)__ceu_new_309))), &((tceu_org*) &(*((CEU_Handler*)__ceu_new_309)))->trls[0],
-               &stk_, NULL);
-
-#line 105 "samples/sample1.ceu"
+#line 123 "samples/sample1.ceu"
+                break;
     }
+}
 
-#line 105 "samples/sample1.ceu"
+#line 123 "samples/sample1.ceu"
         }
 /*}*/
 
-#line 105 "samples/sample1.ceu"
+#line 123 "samples/sample1.ceu"
     }
-#line 105 "samples/sample1.ceu"
-/* CLEAR: Block (105) */
-#line 105 "samples/sample1.ceu"
+#line 123 "samples/sample1.ceu"
+/* CLEAR: Block (123) */
+#line 123 "samples/sample1.ceu"
     if (0) {
 
-#line 105 "samples/sample1.ceu"
+#line 123 "samples/sample1.ceu"
         }   /* opened in "if (0)" */
 }       /* opened in Block_pre */
 
-#line 104 "samples/sample1.ceu"
+#line 122 "samples/sample1.ceu"
     }
 
-#line 104 "samples/sample1.ceu"
+#line 122 "samples/sample1.ceu"
     }
-#line 104 "samples/sample1.ceu"
-/* CLEAR: Block (104) */
-#line 104 "samples/sample1.ceu"
+#line 122 "samples/sample1.ceu"
+/* CLEAR: Block (122) */
+#line 122 "samples/sample1.ceu"
     if (0) {
 
-#line 104 "samples/sample1.ceu"
+#line 122 "samples/sample1.ceu"
         }   /* opened in "if (0)" */
 }       /* opened in Block_pre */
 
-#line 104 "samples/sample1.ceu"
+#line 122 "samples/sample1.ceu"
     }
-#line 104 "samples/sample1.ceu"
-/* CLEAR: Block (104) */
-#line 104 "samples/sample1.ceu"
+#line 122 "samples/sample1.ceu"
+/* CLEAR: Block (122) */
+#line 122 "samples/sample1.ceu"
     if (0) {
 
-#line 104 "samples/sample1.ceu"
+#line 122 "samples/sample1.ceu"
         }   /* opened in "if (0)" */
 }       /* opened in Block_pre */
 
-#line 103 "samples/sample1.ceu"
-case Main_ParOr_out_7:;
-#line 103 "samples/sample1.ceu"
-/* CLEAR: ParOr (103) */
-#line 103 "samples/sample1.ceu"
+#line 121 "samples/sample1.ceu"
+case Main_ParOr_out_11:;
+#line 121 "samples/sample1.ceu"
+/* CLEAR: ParOr (121) */
+#line 121 "samples/sample1.ceu"
     {
     tceu_evt evt;
              evt.id = CEU_IN__CLEAR;
@@ -8199,7 +8374,7 @@ case Main_ParOr_out_7:;
                   _ceu_stk,
                   _ceu_org,
                   &_ceu_org->trls[ 1 ],
-                  &_ceu_org->trls[ 4 ]);
+                  &_ceu_org->trls[ 5 ]);
                                         /* excludes +1 */
 }
 
@@ -8212,32 +8387,32 @@ case Main_ParOr_out_7:;
 CEU_JMP_ORG = _ceu_org;
 #endif
 CEU_JMP_TRL = _ceu_trl;
-CEU_JMP_LBL = Main_ParOr_jmp_8;
+CEU_JMP_LBL = Main_ParOr_jmp_12;
 ceu_longjmp(1, _ceu_stk, _ceu_org,
-            1,3);
+            1,4);
 
-#line 103 "samples/sample1.ceu"
-case Main_ParOr_jmp_8:;/* NODE: Stmts 590 */
+#line 121 "samples/sample1.ceu"
+case Main_ParOr_jmp_12:;/* NODE: Stmts 709 */
 
-#line 113 "samples/sample1.ceu"
-    {/* NODE: Set 588 */
+#line 131 "samples/sample1.ceu"
+    {/* NODE: Set 707 */
 
-#line 113 "samples/sample1.ceu"
-/* SET: _ret *//* NODE: NUMBER 320 */
+#line 131 "samples/sample1.ceu"
+/* SET: _ret *//* NODE: NUMBER 375 */
 
-#line 113 "samples/sample1.ceu"
+#line 131 "samples/sample1.ceu"
     (((CEU_Main*)_ceu_org)->_ret_1) = 0;
-#line 113 "samples/sample1.ceu"
+#line 131 "samples/sample1.ceu"
     #ifdef CEU_RET
     _ceu_app->ret = (((CEU_Main*)_ceu_org)->_ret_1);
 #endif
-/* NODE: Escape 589 */
+/* NODE: Escape 708 */
 
-#line 113 "samples/sample1.ceu"
+#line 131 "samples/sample1.ceu"
     _ceu_lbl = Main_Set_out_0;
 goto _CEU_GOTO_;
 
-#line 113 "samples/sample1.ceu"
+#line 131 "samples/sample1.ceu"
     }
 #line 1 "./config.ceu"
     }
@@ -8247,28 +8422,28 @@ goto _CEU_GOTO_;
     if (0) {
 
 #line 1 "samples/sample1.ceu"
-case Main_Block__fin_11:;
+case Main_Block__fin_15:;
 #line 1 "samples/sample1.ceu"
-    if (((CEU_Main*)_ceu_org)->__fin_324_1) {
-    /* NODE: Finally 251 */
-/* NODE: Block 250 */
+    if (((CEU_Main*)_ceu_org)->__fin_379_1) {
+    /* NODE: Finally 306 */
+/* NODE: Block 305 */
 
-#line 89 "samples/sample1.ceu"
-    {/* NODE: Stmts 249 */
+#line 107 "samples/sample1.ceu"
+    {/* NODE: Stmts 304 */
 
-#line 89 "samples/sample1.ceu"
-    {/* NODE: CallStmt 248 */
+#line 107 "samples/sample1.ceu"
+    {/* NODE: CallStmt 303 */
 
-#line 89 "samples/sample1.ceu"
+#line 107 "samples/sample1.ceu"
     g_object_unref(((CEU__OPTION___GSOCKETSERVICE__REF_SOME_assert(_ceu_app, (&((CEU_Main*)_ceu_org)->service),__FILE__,__LINE__)->SOME.v)));
-#line 89 "samples/sample1.ceu"
+#line 107 "samples/sample1.ceu"
     }
-#line 89 "samples/sample1.ceu"
-/* CLEAR: Block (89) */
-#line 89 "samples/sample1.ceu"
+#line 107 "samples/sample1.ceu"
+/* CLEAR: Block (107) */
+#line 107 "samples/sample1.ceu"
     if (0) {
 
-#line 89 "samples/sample1.ceu"
+#line 107 "samples/sample1.ceu"
         }   /* opened in "if (0)" */
 }       /* opened in Block_pre */
 }
@@ -8306,7 +8481,7 @@ case Main_Set_out_0:;
                   _ceu_stk,
                   _ceu_org,
                   &_ceu_org->trls[ 1 ],
-                  &_ceu_org->trls[ 5 ]);
+                  &_ceu_org->trls[ 6 ]);
                                         /* excludes +1 */
 }
 
@@ -8321,7 +8496,7 @@ CEU_JMP_ORG = _ceu_org;
 CEU_JMP_TRL = _ceu_trl;
 CEU_JMP_LBL = Main_Set_jmp_1;
 ceu_longjmp(1, _ceu_stk, _ceu_org,
-            1,4);
+            1,5);
 
 #line 1 "samples/sample1.ceu"
 case Main_Set_jmp_1:;
@@ -8348,7 +8523,7 @@ case Main_Set_jmp_1:;
                   _ceu_stk,
                   _ceu_org,
                   &_ceu_org->trls[ 0 ],
-                  &_ceu_org->trls[ 6 ]);
+                  &_ceu_org->trls[ 7 ]);
                                         /* excludes +1 */
 }
 
@@ -8361,17 +8536,17 @@ case Main_Set_jmp_1:;
 CEU_JMP_ORG = _ceu_org;
 #endif
 CEU_JMP_TRL = _ceu_trl;
-CEU_JMP_LBL = Main_Block_jmp_14;
+CEU_JMP_LBL = Main_Block_jmp_18;
 ceu_longjmp(1, _ceu_stk, _ceu_org,
-            0,5);
+            0,6);
 
 #line 1 "samples/sample1.ceu"
-case Main_Block_jmp_14:;
+case Main_Block_jmp_18:;
 #line 1 "samples/sample1.ceu"
     if (0) {
 
 #line 1 "samples/sample1.ceu"
-case Main_Block__fin_13:;
+case Main_Block__fin_17:;
 #line 1 "samples/sample1.ceu"
     return;
 #line 1 "samples/sample1.ceu"
@@ -8386,363 +8561,613 @@ _ceu_app->isAlive = 0;
 #line 1 "samples/sample1.ceu"
     return;/* NODE: Dcl_cls 1 */
 
-#line 20 "samples/sample1.ceu"
-case Class_Handler:;/* NODE: Block 483 */
+#line 21 "samples/sample1.ceu"
+case Class_Handler:;/* NODE: Block 602 */
 
-#line 20 "samples/sample1.ceu"
-    {/* NODE: Stmts 482 */
+#line 21 "samples/sample1.ceu"
+    {/* NODE: Stmts 601 */
 
-#line 20 "samples/sample1.ceu"
-    {/* NODE: Block 383 */
+#line 21 "samples/sample1.ceu"
+    {/* NODE: Block 443 */
 
-#line 20 "samples/sample1.ceu"
-    {/* NODE: Stmts 484 */
+#line 21 "samples/sample1.ceu"
+    {/* NODE: Stmts 603 */
 
-#line 20 "samples/sample1.ceu"
-    {/* NODE: Block 230 */
+#line 21 "samples/sample1.ceu"
+    {/* NODE: Block 285 */
 
-#line 23 "samples/sample1.ceu"
+#line 24 "samples/sample1.ceu"
     /*  FINALIZE */
-_ceu_org->trls[ 1 ].evt = CEU_IN__CLEAR;
-_ceu_org->trls[ 1 ].lbl = Handler_Block__fin_3;
+_ceu_org->trls[ 2 ].evt = CEU_IN__CLEAR;
+_ceu_org->trls[ 2 ].lbl = Handler_Block__fin_7;
 
-#line 23 "samples/sample1.ceu"
-    ((CEU_Handler*)_ceu_org)->__fin_230_1 = 0;
-#line 23 "samples/sample1.ceu"
-    ((CEU_Handler*)_ceu_org)->__fin_230_2 = 0;
-#line 23 "samples/sample1.ceu"
-    ((CEU_Handler*)_ceu_org)->__fin_230_3 = 0;
-#line 23 "samples/sample1.ceu"
-    ((CEU_Handler*)_ceu_org)->__fin_230_4 = 0;
-#line 23 "samples/sample1.ceu"
+#line 24 "samples/sample1.ceu"
+    ((CEU_Handler*)_ceu_org)->__fin_285_1 = 0;
+#line 24 "samples/sample1.ceu"
+    ((CEU_Handler*)_ceu_org)->__fin_285_2 = 0;
+#line 24 "samples/sample1.ceu"
+    ((CEU_Handler*)_ceu_org)->__fin_285_3 = 0;
+#line 24 "samples/sample1.ceu"
+    ((CEU_Handler*)_ceu_org)->__fin_285_4 = 0;
+#line 24 "samples/sample1.ceu"
     {
-#line 23 "samples/sample1.ceu"
+#line 24 "samples/sample1.ceu"
     (((CEU_Handler*)_ceu_org)->sockaddr).tag = CEU__OPTION___GSOCKETADDRESS__REF_NIL;
 
-#line 23 "samples/sample1.ceu"
+#line 24 "samples/sample1.ceu"
     (((CEU_Handler*)_ceu_org)->inetaddr).tag = CEU__OPTION___GINETADDRESS__REF_NIL;
 
-#line 23 "samples/sample1.ceu"
+#line 24 "samples/sample1.ceu"
     (((CEU_Handler*)_ceu_org)->buff).tag = CEU__OPTION__CHAR__REF_NIL;
 
-#line 23 "samples/sample1.ceu"
-    (((CEU_Handler*)_ceu_org)->stream).tag = CEU__OPTION___GINPUTSTREAM__REF_NIL;
-/* NODE: Stmts 229 */
+#line 24 "samples/sample1.ceu"
+    u16 __ceu_port_12;
 
-#line 23 "samples/sample1.ceu"
-    {/* NODE: Stmts 394 */
+#line 24 "samples/sample1.ceu"
+    (((CEU_Handler*)_ceu_org)->input_stream).tag = CEU__OPTION___GINPUTSTREAM__REF_NIL;
 
-#line 23 "samples/sample1.ceu"
-    {/* NODE: Dcl_var 391 */
-/* NODE: Set 395 */
+#line 24 "samples/sample1.ceu"
+    (((CEU_Handler*)_ceu_org)->output_stream).tag = CEU__OPTION___GOUTPUTSTREAM__REF_NIL;
+/* NODE: Stmts 284 */
 
-#line 23 "samples/sample1.ceu"
-/* SET: me *//* NODE: Nat 12 */
+#line 24 "samples/sample1.ceu"
+    {/* NODE: Stmts 454 */
 
-#line 23 "samples/sample1.ceu"
+#line 24 "samples/sample1.ceu"
+    {/* NODE: Dcl_var 451 */
+/* NODE: Set 455 */
+
+#line 24 "samples/sample1.ceu"
+/* SET: me *//* NODE: Nat 14 */
+
+#line 24 "samples/sample1.ceu"
     (((CEU_Handler*)_ceu_org)->me) = ORGS;
-#line 23 "samples/sample1.ceu"
-    }/* NODE: Set 396 */
-
 #line 24 "samples/sample1.ceu"
-/* SET: _ORGS *//* NODE: Op2_+ 17 */
+    }/* NODE: Set 456 */
 
-#line 24 "samples/sample1.ceu"
-    ORGS = (ORGS+1);/* NODE: CallStmt 25 */
+#line 25 "samples/sample1.ceu"
+/* SET: _ORGS *//* NODE: Op2_+ 19 */
 
-#line 26 "samples/sample1.ceu"
-    g_object_ref(((CEU__OPTION___GSOCKETCONNECTION__REF_SOME_assert(_ceu_app, (&((CEU_Handler*)_ceu_org)->connection),__FILE__,__LINE__)->SOME.v)));/* NODE: Stmts 399 */
+#line 25 "samples/sample1.ceu"
+    ORGS = (ORGS+1);/* NODE: CallStmt 27 */
 
-#line 28 "samples/sample1.ceu"
-    {/* NODE: Dcl_adt 606 */
-/* NODE: Dcl_var 398 */
-
-#line 28 "samples/sample1.ceu"
-    }/* NODE: Stmts 402 */
+#line 27 "samples/sample1.ceu"
+    g_object_ref(((CEU__OPTION___GSOCKETCONNECTION__REF_SOME_assert(_ceu_app, (&((CEU_Handler*)_ceu_org)->connection),__FILE__,__LINE__)->SOME.v)));/* NODE: Stmts 459 */
 
 #line 29 "samples/sample1.ceu"
-    {/* NODE: Dcl_var 401 */
+    {/* NODE: Dcl_adt 725 */
+/* NODE: Dcl_var 458 */
 
 #line 29 "samples/sample1.ceu"
-    }/* NODE: Stmts 405 */
+    }/* NODE: Stmts 462 */
 
 #line 30 "samples/sample1.ceu"
-    {/* NODE: Dcl_adt 612 */
-/* NODE: Dcl_var 404 */
+    {/* NODE: Dcl_var 461 */
 
 #line 30 "samples/sample1.ceu"
-    }/* NODE: Finalize 53 */
+    }/* NODE: Stmts 465 */
 
-#line 32 "samples/sample1.ceu"
-    ((CEU_Handler*)_ceu_org)->__fin_230_4 = 1;/* NODE: Set 406 */
+#line 31 "samples/sample1.ceu"
+    {/* NODE: Dcl_adt 731 */
+/* NODE: Dcl_var 464 */
+
+#line 31 "samples/sample1.ceu"
+    }/* NODE: Finalize 55 */
 
 #line 33 "samples/sample1.ceu"
-/* SET: sockaddr *//* NODE: Op1_& 41 */
+    ((CEU_Handler*)_ceu_org)->__fin_285_4 = 1;/* NODE: Set 466 */
 
-#line 33 "samples/sample1.ceu"
-    (((CEU_Handler*)_ceu_org)->sockaddr) = (CEU__OPTION___GSOCKETADDRESS__REF_pack(g_socket_connection_get_remote_address(((CEU__OPTION___GSOCKETCONNECTION__REF_SOME_assert(_ceu_app, (&((CEU_Handler*)_ceu_org)->connection),__FILE__,__LINE__)->SOME.v)),(&((CEU_Handler*)_ceu_org)->conn_error))));/* NODE: Finalize 76 */
+#line 34 "samples/sample1.ceu"
+/* SET: sockaddr *//* NODE: Op1_& 43 */
 
-#line 39 "samples/sample1.ceu"
-    ((CEU_Handler*)_ceu_org)->__fin_230_3 = 1;/* NODE: Set 407 */
-
-#line 40 "samples/sample1.ceu"
-/* SET: inetaddr *//* NODE: Op1_& 64 */
+#line 34 "samples/sample1.ceu"
+    (((CEU_Handler*)_ceu_org)->sockaddr) = (CEU__OPTION___GSOCKETADDRESS__REF_pack(g_socket_connection_get_remote_address(((CEU__OPTION___GSOCKETCONNECTION__REF_SOME_assert(_ceu_app, (&((CEU_Handler*)_ceu_org)->connection),__FILE__,__LINE__)->SOME.v)),(&((CEU_Handler*)_ceu_org)->conn_error))));/* NODE: Finalize 78 */
 
 #line 40 "samples/sample1.ceu"
-    (((CEU_Handler*)_ceu_org)->inetaddr) = (CEU__OPTION___GINETADDRESS__REF_pack(g_inet_socket_address_get_address(G_INET_SOCKET_ADDRESS(((CEU__OPTION___GSOCKETADDRESS__REF_SOME_assert(_ceu_app, (&((CEU_Handler*)_ceu_org)->sockaddr),__FILE__,__LINE__)->SOME.v))))));/* NODE: CallStmt 83 */
+    ((CEU_Handler*)_ceu_org)->__fin_285_3 = 1;/* NODE: Set 467 */
 
-#line 45 "samples/sample1.ceu"
-    g_object_ref(((CEU__OPTION___GINETADDRESS__REF_SOME_assert(_ceu_app, (&((CEU_Handler*)_ceu_org)->inetaddr),__FILE__,__LINE__)->SOME.v)));/* NODE: Stmts 410 */
+#line 41 "samples/sample1.ceu"
+/* SET: inetaddr *//* NODE: Op1_& 66 */
 
-#line 47 "samples/sample1.ceu"
-    {/* NODE: Dcl_adt 618 */
-/* NODE: Dcl_var 409 */
+#line 41 "samples/sample1.ceu"
+    (((CEU_Handler*)_ceu_org)->inetaddr) = (CEU__OPTION___GINETADDRESS__REF_pack(g_inet_socket_address_get_address(G_INET_SOCKET_ADDRESS(((CEU__OPTION___GSOCKETADDRESS__REF_SOME_assert(_ceu_app, (&((CEU_Handler*)_ceu_org)->sockaddr),__FILE__,__LINE__)->SOME.v))))));/* NODE: CallStmt 85 */
 
-#line 47 "samples/sample1.ceu"
-    }/* NODE: Finalize 105 */
+#line 46 "samples/sample1.ceu"
+    g_object_ref(((CEU__OPTION___GINETADDRESS__REF_SOME_assert(_ceu_app, (&((CEU_Handler*)_ceu_org)->inetaddr),__FILE__,__LINE__)->SOME.v)));/* NODE: Stmts 470 */
 
 #line 48 "samples/sample1.ceu"
-    ((CEU_Handler*)_ceu_org)->__fin_230_2 = 1;/* NODE: Set 411 */
+    {/* NODE: Dcl_adt 737 */
+/* NODE: Dcl_var 469 */
+
+#line 48 "samples/sample1.ceu"
+    }/* NODE: Finalize 107 */
 
 #line 49 "samples/sample1.ceu"
-/* SET: buff *//* NODE: Op1_& 93 */
+    ((CEU_Handler*)_ceu_org)->__fin_285_2 = 1;/* NODE: Set 471 */
 
-#line 49 "samples/sample1.ceu"
-    (((CEU_Handler*)_ceu_org)->buff) = (CEU__OPTION__CHAR__REF_pack(g_inet_address_to_string(((CEU__OPTION___GINETADDRESS__REF_SOME_assert(_ceu_app, (&((CEU_Handler*)_ceu_org)->inetaddr),__FILE__,__LINE__)->SOME.v)))));/* NODE: Stmts 416 */
+#line 50 "samples/sample1.ceu"
+/* SET: buff *//* NODE: Op1_& 95 */
 
-#line 54 "samples/sample1.ceu"
-    {/* NODE: Dcl_var 413 */
-/* NODE: Set 417 */
+#line 50 "samples/sample1.ceu"
+    (((CEU_Handler*)_ceu_org)->buff) = (CEU__OPTION__CHAR__REF_pack(g_inet_address_to_string(((CEU__OPTION___GINETADDRESS__REF_SOME_assert(_ceu_app, (&((CEU_Handler*)_ceu_org)->inetaddr),__FILE__,__LINE__)->SOME.v)))));/* NODE: Stmts 476 */
 
-#line 54 "samples/sample1.ceu"
-/* SET: port *//* NODE: Op2_call 115 */
+#line 55 "samples/sample1.ceu"
+    {/* NODE: Dcl_var 473 */
+/* NODE: Set 477 */
 
-#line 54 "samples/sample1.ceu"
-    (((CEU_Handler*)_ceu_org)->port) = g_inet_socket_address_get_port(G_INET_SOCKET_ADDRESS(((CEU__OPTION___GSOCKETADDRESS__REF_SOME_assert(_ceu_app, (&((CEU_Handler*)_ceu_org)->sockaddr),__FILE__,__LINE__)->SOME.v))));
-#line 54 "samples/sample1.ceu"
-    }/* NODE: CallStmt 121 */
+#line 55 "samples/sample1.ceu"
+/* SET: port *//* NODE: Op2_call 117 */
 
-#line 57 "samples/sample1.ceu"
-    printf("*****\n");/* NODE: CallStmt 126 */
+#line 55 "samples/sample1.ceu"
+    (__ceu_port_12) = g_inet_socket_address_get_port(G_INET_SOCKET_ADDRESS(((CEU__OPTION___GSOCKETADDRESS__REF_SOME_assert(_ceu_app, (&((CEU_Handler*)_ceu_org)->sockaddr),__FILE__,__LINE__)->SOME.v))));
+#line 55 "samples/sample1.ceu"
+    }/* NODE: CallStmt 123 */
 
 #line 58 "samples/sample1.ceu"
-    printf("New client:\n");/* NODE: CallStmt 134 */
+    printf("*****\n");/* NODE: CallStmt 128 */
 
 #line 59 "samples/sample1.ceu"
-    printf("IP: %s\n",((CEU__OPTION__CHAR__REF_SOME_assert(_ceu_app, (&((CEU_Handler*)_ceu_org)->buff),__FILE__,__LINE__)->SOME.v)));/* NODE: CallStmt 140 */
+    printf("New client:\n");/* NODE: CallStmt 136 */
 
 #line 60 "samples/sample1.ceu"
-    printf("Port: %d\n",(((CEU_Handler*)_ceu_org)->port));/* NODE: CallStmt 145 */
+    printf("IP: %s\n",((CEU__OPTION__CHAR__REF_SOME_assert(_ceu_app, (&((CEU_Handler*)_ceu_org)->buff),__FILE__,__LINE__)->SOME.v)));/* NODE: CallStmt 142 */
 
 #line 61 "samples/sample1.ceu"
-    printf("*****\n");/* NODE: Stmts 420 */
+    printf("Port: %d\n",(__ceu_port_12));/* NODE: CallStmt 147 */
 
 #line 62 "samples/sample1.ceu"
-    {/* NODE: Dcl_adt 624 */
-/* NODE: Dcl_var 419 */
+    printf("*****\n");/* NODE: Stmts 480 */
 
-#line 62 "samples/sample1.ceu"
-    }/* NODE: Finalize 163 */
-/* NODE: Set 421 */
+#line 63 "samples/sample1.ceu"
+    {/* NODE: Dcl_adt 743 */
+/* NODE: Dcl_var 479 */
 
-#line 64 "samples/sample1.ceu"
-/* SET: stream *//* NODE: Op1_& 158 */
+#line 63 "samples/sample1.ceu"
+    }/* NODE: Finalize 165 */
+/* NODE: Set 481 */
 
-#line 64 "samples/sample1.ceu"
-    (((CEU_Handler*)_ceu_org)->stream) = (CEU__OPTION___GINPUTSTREAM__REF_pack(g_io_stream_get_input_stream(G_IO_STREAM(((CEU__OPTION___GSOCKETCONNECTION__REF_SOME_assert(_ceu_app, (&((CEU_Handler*)_ceu_org)->connection),__FILE__,__LINE__)->SOME.v))))));/* NODE: Block 425 */
+#line 65 "samples/sample1.ceu"
+/* SET: input_stream *//* NODE: Op1_& 160 */
 
-#line 68 "samples/sample1.ceu"
-    {/* NODE: Stmts 424 */
+#line 65 "samples/sample1.ceu"
+    (((CEU_Handler*)_ceu_org)->input_stream) = (CEU__OPTION___GINPUTSTREAM__REF_pack(g_io_stream_get_input_stream(G_IO_STREAM(((CEU__OPTION___GSOCKETCONNECTION__REF_SOME_assert(_ceu_app, (&((CEU_Handler*)_ceu_org)->connection),__FILE__,__LINE__)->SOME.v))))));/* NODE: Stmts 484 */
 
-#line 68 "samples/sample1.ceu"
-    {/* NODE: Stmts 423 */
+#line 70 "samples/sample1.ceu"
+    {/* NODE: Dcl_adt 749 */
+/* NODE: Dcl_var 483 */
 
-#line 68 "samples/sample1.ceu"
+#line 70 "samples/sample1.ceu"
+    }/* NODE: Finalize 183 */
+/* NODE: Set 485 */
+
+#line 72 "samples/sample1.ceu"
+/* SET: output_stream *//* NODE: Op1_& 178 */
+
+#line 72 "samples/sample1.ceu"
+    (((CEU_Handler*)_ceu_org)->output_stream) = (CEU__OPTION___GOUTPUTSTREAM__REF_pack(g_io_stream_get_output_stream(G_IO_STREAM(((CEU__OPTION___GSOCKETCONNECTION__REF_SOME_assert(_ceu_app, (&((CEU_Handler*)_ceu_org)->connection),__FILE__,__LINE__)->SOME.v))))));/* NODE: ParOr 272 */
+
+#line 77 "samples/sample1.ceu"
+/* ParOr: spawn subs */
+#line 77 "samples/sample1.ceu"
     {
-#line 68 "samples/sample1.ceu"
-    }/* NODE: Loop 422 */
+    tceu_stk stk_ = { _ceu_stk, _ceu_org, 0, 1, {} };
+    int ret = setjmp(stk_.jmp);
+    if (ret != 0) {
+        /* can only come from CLEAR */
+        ceu_out_assert(ret == 1);
+        /* This trail has been aborted from the call below.
+         * It was the lowest aborted trail in the stack, so the abortion code 
+         * "CLEAR" did a "longjmp" to here to unwind the whole stack.
+         * Let's go to the continuation of the abortion received in 
+         * "CEU_JMP_LBL/ORG".
+         */
+#ifdef CEU_ORGS
+        _ceu_org = CEU_JMP_ORG;
+#endif
+        _ceu_trl = CEU_JMP_TRL;
 
-#line 68 "samples/sample1.ceu"
+#line 77 "samples/sample1.ceu"
+    _ceu_lbl = CEU_JMP_LBL;
+goto _CEU_GOTO_;
+
+#line 77 "samples/sample1.ceu"
+        }
+
+#line 77 "samples/sample1.ceu"
+        _ceu_org->trls[ 0 ].lbl = Handler_ParOr_sub_1_2;
+    ceu_app_go(_ceu_app,NULL,_ceu_org,
+               &_ceu_org->trls[ 0 ],
+               &stk_,NULL);
+
+#line 77 "samples/sample1.ceu"
+        _ceu_trl = &_ceu_org->trls[ 1 ];
+
+#line 77 "samples/sample1.ceu"
+    }
+/* NODE: Block 271 */
+
+#line 92 "samples/sample1.ceu"
+    {/* NODE: Stmts 270 */
+
+#line 92 "samples/sample1.ceu"
+    {/* NODE: Block 553 */
+
+#line 92 "samples/sample1.ceu"
+    {/* NODE: Stmts 552 */
+
+#line 92 "samples/sample1.ceu"
+    {/* NODE: Stmts 551 */
+
+#line 92 "samples/sample1.ceu"
+    {
+#line 92 "samples/sample1.ceu"
+    }/* NODE: Loop 550 */
+
+#line 92 "samples/sample1.ceu"
     for (;;) {
-/* NODE: Block 216 */
+/* NODE: Block 268 */
 
-#line 69 "samples/sample1.ceu"
+#line 93 "samples/sample1.ceu"
+    {/* NODE: Stmts 267 */
+
+#line 93 "samples/sample1.ceu"
+    {/* NODE: Stmts 558 */
+
+#line 93 "samples/sample1.ceu"
+    {/* NODE: Dcl_var 555 */
+/* NODE: Stmts 592 */
+
+#line 93 "samples/sample1.ceu"
+    {/* NODE: Nothing 566 */
+/* NODE: Block 596 */
+
+#line 93 "samples/sample1.ceu"
+    {/* NODE: Stmts 595 */
+
+#line 93 "samples/sample1.ceu"
+    {/* NODE: Stmts 594 */
+
+#line 93 "samples/sample1.ceu"
     {
-#line 69 "samples/sample1.ceu"
-    InputMessage* __ceu_message_15;
-/* NODE: Stmts 215 */
+#line 93 "samples/sample1.ceu"
+    }/* NODE: Loop 593 */
 
-#line 69 "samples/sample1.ceu"
-    {/* NODE: CallStmt 172 */
-
-#line 69 "samples/sample1.ceu"
-    async_read(((CEU__OPTION___GINPUTSTREAM__REF_SOME_assert(_ceu_app, (&((CEU_Handler*)_ceu_org)->stream),__FILE__,__LINE__)->SOME.v)),1024,(((CEU_Handler*)_ceu_org)->me));/* NODE: Stmts 430 */
-
-#line 70 "samples/sample1.ceu"
-    {/* NODE: Dcl_var 427 */
-/* NODE: Stmts 464 */
-
-#line 70 "samples/sample1.ceu"
-    {/* NODE: Nothing 438 */
-/* NODE: Block 468 */
-
-#line 70 "samples/sample1.ceu"
-    {/* NODE: Stmts 467 */
-
-#line 70 "samples/sample1.ceu"
-    {/* NODE: Stmts 466 */
-
-#line 70 "samples/sample1.ceu"
-    {
-#line 70 "samples/sample1.ceu"
-    }/* NODE: Loop 465 */
-
-#line 70 "samples/sample1.ceu"
+#line 93 "samples/sample1.ceu"
     for (;;) {
-/* NODE: Stmts 436 */
+/* NODE: Stmts 564 */
 
-#line 70 "samples/sample1.ceu"
-    {/* NODE: Set 432 */
+#line 93 "samples/sample1.ceu"
+    {/* NODE: Set 560 */
 
-#line 70 "samples/sample1.ceu"
-/* SET: table: 0xb7cce0 *//* NODE: Await 179 */
+#line 93 "samples/sample1.ceu"
+/* SET: table: 0xc43d40 *//* NODE: Await 258 */
 
-#line 70 "samples/sample1.ceu"
-    _CEU_NO_179_:
-if (0) { goto _CEU_NO_179_; /* avoids "not used" warning */ }
+#line 93 "samples/sample1.ceu"
+    _CEU_NO_258_:
+if (0) { goto _CEU_NO_258_; /* avoids "not used" warning */ }
 
-#line 70 "samples/sample1.ceu"
-    _ceu_trl->evt = CEU_IN_READ_DONE;
-_ceu_trl->lbl = Handler_Awake_READ_DONE_2;
+#line 93 "samples/sample1.ceu"
+    _ceu_trl->evt = CEU_IN_WRITE_DONE;
+_ceu_trl->lbl = Handler_Awake_WRITE_DONE_6;
 _ceu_trl->seqno = _ceu_app->seqno;
 
-#line 70 "samples/sample1.ceu"
+#line 93 "samples/sample1.ceu"
     return;
 
-case Handler_Awake_READ_DONE_2:;
+case Handler_Awake_WRITE_DONE_6:;
 
-#line 70 "samples/sample1.ceu"
+#line 93 "samples/sample1.ceu"
     #ifdef CEU_DEBUG_TRAILS
 #ifndef CEU_OS
 printf("\tOK!\n");
 #endif
 #endif
 
-#line 70 "samples/sample1.ceu"
+#line 93 "samples/sample1.ceu"
     {
 
-#line 70 "samples/sample1.ceu"
-        tceu__InputMessage_** __ceu_casted = (tceu__InputMessage_**) _ceu_evt->param;
+#line 93 "samples/sample1.ceu"
+        tceu__Message_** __ceu_casted = (tceu__Message_**) _ceu_evt->param;
 
-#line 70 "samples/sample1.ceu"
-        (__ceu_message_15) = ((*(__ceu_casted))->_1);
+#line 93 "samples/sample1.ceu"
+        (((CEU_Handler*)_ceu_org)->message_18) = ((*(__ceu_casted))->_1);
 }
-/* NODE: If 435 */
+/* NODE: If 563 */
 
-#line 70 "samples/sample1.ceu"
-    if (((((*(__ceu_message_15)).to))==(((CEU_Handler*)_ceu_org)->me))) {
-/* NODE: Break 433 */
+#line 93 "samples/sample1.ceu"
+    if (((((*(((CEU_Handler*)_ceu_org)->message_18)).to))==(((CEU_Handler*)_ceu_org)->me))) {
+/* NODE: Break 561 */
 
-#line 70 "samples/sample1.ceu"
+#line 93 "samples/sample1.ceu"
     break;} else {
-/* NODE: Nothing 434 */
+/* NODE: Nothing 562 */
 }
 
-#line 70 "samples/sample1.ceu"
+#line 93 "samples/sample1.ceu"
     }
-#line 70 "samples/sample1.ceu"
+#line 93 "samples/sample1.ceu"
     }
 
-#line 70 "samples/sample1.ceu"
-/* CLEAR: Loop (70) */
-#line 70 "samples/sample1.ceu"
+#line 93 "samples/sample1.ceu"
+/* CLEAR: Loop (93) */
+#line 93 "samples/sample1.ceu"
     }
-#line 70 "samples/sample1.ceu"
-/* CLEAR: Block (70) */
-#line 70 "samples/sample1.ceu"
+#line 93 "samples/sample1.ceu"
+/* CLEAR: Block (93) */
+#line 93 "samples/sample1.ceu"
     if (0) {
 
-#line 70 "samples/sample1.ceu"
+#line 93 "samples/sample1.ceu"
         }   /* opened in "if (0)" */
 }       /* opened in Block_pre */
-/* NODE: Nothing 668 */
-/* NODE: Nothing 669 */
+/* NODE: Nothing 801 */
+/* NODE: Nothing 802 */
 
-#line 70 "samples/sample1.ceu"
+#line 93 "samples/sample1.ceu"
     }
-#line 70 "samples/sample1.ceu"
-    }/* NODE: Set 471 */
+#line 93 "samples/sample1.ceu"
+    }/* NODE: CallStmt 266 */
 
-#line 71 "samples/sample1.ceu"
-/* SET: idx *//* NODE: NUMBER 186 */
-
-#line 71 "samples/sample1.ceu"
-    (((*(__ceu_message_15)).buff))[(((*(__ceu_message_15)).read_count))] = '\0';/* NODE: CallStmt 198 */
-
-#line 73 "samples/sample1.ceu"
-    printf("Message from %s:%d: %s",((CEU__OPTION__CHAR__REF_SOME_assert(_ceu_app, (&((CEU_Handler*)_ceu_org)->buff),__FILE__,__LINE__)->SOME.v)),(((CEU_Handler*)_ceu_org)->port),(((*(__ceu_message_15)).buff)));/* NODE: If 479 */
-
-#line 74 "samples/sample1.ceu"
-    if ((strncmp((((*(__ceu_message_15)).buff)),"quit",strlen("quit"))==0)) {
-/* NODE: Block 213 */
-
-#line 75 "samples/sample1.ceu"
-    {/* NODE: Stmts 212 */
-
-#line 75 "samples/sample1.ceu"
-    {/* NODE: Break 211 */
-
-#line 75 "samples/sample1.ceu"
-    break;
-#line 75 "samples/sample1.ceu"
+#line 94 "samples/sample1.ceu"
+    printf("Bytes sent: %lu\n",(((*(((CEU_Handler*)_ceu_org)->message_18)).bytes_count)));
+#line 93 "samples/sample1.ceu"
     }
-#line 75 "samples/sample1.ceu"
-/* CLEAR: Block (75) */
-#line 75 "samples/sample1.ceu"
+#line 93 "samples/sample1.ceu"
+/* CLEAR: Block (93) */
+#line 93 "samples/sample1.ceu"
     if (0) {
 
-#line 75 "samples/sample1.ceu"
+#line 93 "samples/sample1.ceu"
+        }   /* opened in "if (0)" */
+}       /* opened in Block_pre */
+
+#line 92 "samples/sample1.ceu"
+    }
+
+#line 92 "samples/sample1.ceu"
+    }
+#line 92 "samples/sample1.ceu"
+/* CLEAR: Block (92) */
+#line 92 "samples/sample1.ceu"
+    if (0) {
+
+#line 92 "samples/sample1.ceu"
+        }   /* opened in "if (0)" */
+}       /* opened in Block_pre */
+
+#line 92 "samples/sample1.ceu"
+    }
+#line 92 "samples/sample1.ceu"
+/* CLEAR: Block (92) */
+#line 92 "samples/sample1.ceu"
+    if (0) {
+
+#line 92 "samples/sample1.ceu"
+        }   /* opened in "if (0)" */
+}       /* opened in Block_pre */
+
+#line 77 "samples/sample1.ceu"
+case Handler_ParOr_sub_1_2:;/* NODE: Block 251 */
+
+#line 78 "samples/sample1.ceu"
+    {/* NODE: Stmts 250 */
+
+#line 78 "samples/sample1.ceu"
+    {/* NODE: Block 489 */
+
+#line 78 "samples/sample1.ceu"
+    {/* NODE: Stmts 488 */
+
+#line 78 "samples/sample1.ceu"
+    {/* NODE: Stmts 487 */
+
+#line 78 "samples/sample1.ceu"
+    {
+#line 78 "samples/sample1.ceu"
+    }/* NODE: Loop 486 */
+
+#line 78 "samples/sample1.ceu"
+    for (;;) {
+/* NODE: Block 248 */
+
+#line 79 "samples/sample1.ceu"
+    {/* NODE: Stmts 247 */
+
+#line 79 "samples/sample1.ceu"
+    {/* NODE: CallStmt 192 */
+
+#line 79 "samples/sample1.ceu"
+    async_read(((CEU__OPTION___GINPUTSTREAM__REF_SOME_assert(_ceu_app, (&((CEU_Handler*)_ceu_org)->input_stream),__FILE__,__LINE__)->SOME.v)),1024,(((CEU_Handler*)_ceu_org)->me));/* NODE: Stmts 494 */
+
+#line 80 "samples/sample1.ceu"
+    {/* NODE: Dcl_var 491 */
+/* NODE: Stmts 528 */
+
+#line 80 "samples/sample1.ceu"
+    {/* NODE: Nothing 502 */
+/* NODE: Block 532 */
+
+#line 80 "samples/sample1.ceu"
+    {/* NODE: Stmts 531 */
+
+#line 80 "samples/sample1.ceu"
+    {/* NODE: Stmts 530 */
+
+#line 80 "samples/sample1.ceu"
+    {
+#line 80 "samples/sample1.ceu"
+    }/* NODE: Loop 529 */
+
+#line 80 "samples/sample1.ceu"
+    for (;;) {
+/* NODE: Stmts 500 */
+
+#line 80 "samples/sample1.ceu"
+    {/* NODE: Set 496 */
+
+#line 80 "samples/sample1.ceu"
+/* SET: table: 0xc48180 *//* NODE: Await 199 */
+
+#line 80 "samples/sample1.ceu"
+    _CEU_NO_199_:
+if (0) { goto _CEU_NO_199_; /* avoids "not used" warning */ }
+
+#line 80 "samples/sample1.ceu"
+    _ceu_trl->evt = CEU_IN_READ_DONE;
+_ceu_trl->lbl = Handler_Awake_READ_DONE_5;
+_ceu_trl->seqno = _ceu_app->seqno;
+
+#line 80 "samples/sample1.ceu"
+    return;
+
+case Handler_Awake_READ_DONE_5:;
+
+#line 80 "samples/sample1.ceu"
+    #ifdef CEU_DEBUG_TRAILS
+#ifndef CEU_OS
+printf("\tOK!\n");
+#endif
+#endif
+
+#line 80 "samples/sample1.ceu"
+    {
+
+#line 80 "samples/sample1.ceu"
+        tceu__Message_** __ceu_casted = (tceu__Message_**) _ceu_evt->param;
+
+#line 80 "samples/sample1.ceu"
+        (((CEU_Handler*)_ceu_org)->message_17) = ((*(__ceu_casted))->_1);
+}
+/* NODE: If 499 */
+
+#line 80 "samples/sample1.ceu"
+    if (((((*(((CEU_Handler*)_ceu_org)->message_17)).to))==(((CEU_Handler*)_ceu_org)->me))) {
+/* NODE: Break 497 */
+
+#line 80 "samples/sample1.ceu"
+    break;} else {
+/* NODE: Nothing 498 */
+}
+
+#line 80 "samples/sample1.ceu"
+    }
+#line 80 "samples/sample1.ceu"
+    }
+
+#line 80 "samples/sample1.ceu"
+/* CLEAR: Loop (80) */
+#line 80 "samples/sample1.ceu"
+    }
+#line 80 "samples/sample1.ceu"
+/* CLEAR: Block (80) */
+#line 80 "samples/sample1.ceu"
+    if (0) {
+
+#line 80 "samples/sample1.ceu"
+        }   /* opened in "if (0)" */
+}       /* opened in Block_pre */
+/* NODE: Nothing 799 */
+/* NODE: Nothing 800 */
+
+#line 80 "samples/sample1.ceu"
+    }
+#line 80 "samples/sample1.ceu"
+    }/* NODE: Set 535 */
+
+#line 81 "samples/sample1.ceu"
+/* SET: idx *//* NODE: NUMBER 206 */
+
+#line 81 "samples/sample1.ceu"
+    (((*(((CEU_Handler*)_ceu_org)->message_17)).buff))[(((*(((CEU_Handler*)_ceu_org)->message_17)).bytes_count))] = '\0';/* NODE: CallStmt 215 */
+
+#line 83 "samples/sample1.ceu"
+    printf("Message (handler #%d): %s",(((CEU_Handler*)_ceu_org)->me),(((*(((CEU_Handler*)_ceu_org)->message_17)).buff)));/* NODE: If 543 */
+
+#line 84 "samples/sample1.ceu"
+    if ((strncmp((((*(((CEU_Handler*)_ceu_org)->message_17)).buff)),"quit",strlen("quit"))==0)) {
+/* NODE: Block 230 */
+
+#line 85 "samples/sample1.ceu"
+    {/* NODE: Stmts 229 */
+
+#line 85 "samples/sample1.ceu"
+    {/* NODE: Break 228 */
+
+#line 85 "samples/sample1.ceu"
+    break;
+#line 85 "samples/sample1.ceu"
+    }
+#line 85 "samples/sample1.ceu"
+/* CLEAR: Block (85) */
+#line 85 "samples/sample1.ceu"
+    if (0) {
+
+#line 85 "samples/sample1.ceu"
         }   /* opened in "if (0)" */
 }       /* opened in Block_pre */
 } else {
-/* NODE: Nothing 478 */
+/* NODE: Nothing 542 */
 }
+/* NODE: CallStmt 246 */
 
-#line 69 "samples/sample1.ceu"
+#line 89 "samples/sample1.ceu"
+    async_write(((CEU__OPTION___GOUTPUTSTREAM__REF_SOME_assert(_ceu_app, (&((CEU_Handler*)_ceu_org)->output_stream),__FILE__,__LINE__)->SOME.v)),(((*(((CEU_Handler*)_ceu_org)->message_17)).buff)),strlen((((*(((CEU_Handler*)_ceu_org)->message_17)).buff))),(((CEU_Handler*)_ceu_org)->me));
+#line 79 "samples/sample1.ceu"
     }
-#line 69 "samples/sample1.ceu"
-/* CLEAR: Block (69) */
-#line 69 "samples/sample1.ceu"
+#line 79 "samples/sample1.ceu"
+/* CLEAR: Block (79) */
+#line 79 "samples/sample1.ceu"
     if (0) {
-
-#line 69 "samples/sample1.ceu"
-        }   /* opened in "if (0)" */
-}       /* opened in Block_pre */
-
-#line 68 "samples/sample1.ceu"
-    }
-
-#line 68 "samples/sample1.ceu"
-/* CLEAR: Loop (68) */
-#line 68 "samples/sample1.ceu"
-    }
-#line 68 "samples/sample1.ceu"
-/* CLEAR: Block (68) */
-#line 68 "samples/sample1.ceu"
-    if (0) {
-
-#line 68 "samples/sample1.ceu"
-        }   /* opened in "if (0)" */
-}       /* opened in Block_pre */
-/* NODE: Finalize 228 */
 
 #line 79 "samples/sample1.ceu"
-    ((CEU_Handler*)_ceu_org)->__fin_230_1 = 1;
-#line 23 "samples/sample1.ceu"
+        }   /* opened in "if (0)" */
+}       /* opened in Block_pre */
+
+#line 78 "samples/sample1.ceu"
     }
-#line 23 "samples/sample1.ceu"
-/* CLEAR: Block (23) */
-#line 23 "samples/sample1.ceu"
+
+#line 78 "samples/sample1.ceu"
+/* CLEAR: Loop (78) */
+#line 78 "samples/sample1.ceu"
+    }
+#line 78 "samples/sample1.ceu"
+/* CLEAR: Block (78) */
+#line 78 "samples/sample1.ceu"
+    if (0) {
+
+#line 78 "samples/sample1.ceu"
+        }   /* opened in "if (0)" */
+}       /* opened in Block_pre */
+
+#line 78 "samples/sample1.ceu"
+    }
+#line 78 "samples/sample1.ceu"
+/* CLEAR: Block (78) */
+#line 78 "samples/sample1.ceu"
+    if (0) {
+
+#line 78 "samples/sample1.ceu"
+        }   /* opened in "if (0)" */
+}       /* opened in Block_pre */
+
+#line 77 "samples/sample1.ceu"
+/* PAROR JOIN */
+#line 77 "samples/sample1.ceu"
+    _ceu_lbl = Handler_ParOr_out_3;
+goto _CEU_GOTO_;
+
+#line 77 "samples/sample1.ceu"
+case Handler_ParOr_out_3:;
+#line 77 "samples/sample1.ceu"
+/* CLEAR: ParOr (77) *//* NODE: Finalize 283 */
+
+#line 97 "samples/sample1.ceu"
+    ((CEU_Handler*)_ceu_org)->__fin_285_1 = 1;
+#line 24 "samples/sample1.ceu"
+    }
+#line 24 "samples/sample1.ceu"
+/* CLEAR: Block (24) */
+#line 24 "samples/sample1.ceu"
     {
     tceu_evt evt;
              evt.id = CEU_IN__CLEAR;
@@ -8750,7 +9175,7 @@ printf("\tOK!\n");
                   _ceu_stk,
                   _ceu_org,
                   &_ceu_org->trls[ 0 ],
-                  &_ceu_org->trls[ 2 ]);
+                  &_ceu_org->trls[ 3 ]);
                                         /* excludes +1 */
 }
 
@@ -8763,146 +9188,146 @@ printf("\tOK!\n");
 CEU_JMP_ORG = _ceu_org;
 #endif
 CEU_JMP_TRL = _ceu_trl;
-CEU_JMP_LBL = Handler_Block_jmp_4;
+CEU_JMP_LBL = Handler_Block_jmp_8;
 ceu_longjmp(1, _ceu_stk, _ceu_org,
-            0,1);
+            0,2);
 
-#line 23 "samples/sample1.ceu"
-case Handler_Block_jmp_4:;
-#line 23 "samples/sample1.ceu"
+#line 24 "samples/sample1.ceu"
+case Handler_Block_jmp_8:;
+#line 24 "samples/sample1.ceu"
     if (0) {
 
-#line 23 "samples/sample1.ceu"
-case Handler_Block__fin_3:;
-#line 23 "samples/sample1.ceu"
-    if (((CEU_Handler*)_ceu_org)->__fin_230_1) {
-    /* NODE: Finally 227 */
-/* NODE: Block 226 */
+#line 24 "samples/sample1.ceu"
+case Handler_Block__fin_7:;
+#line 24 "samples/sample1.ceu"
+    if (((CEU_Handler*)_ceu_org)->__fin_285_1) {
+    /* NODE: Finally 282 */
+/* NODE: Block 281 */
 
-#line 80 "samples/sample1.ceu"
-    {/* NODE: Stmts 225 */
+#line 98 "samples/sample1.ceu"
+    {/* NODE: Stmts 280 */
 
-#line 80 "samples/sample1.ceu"
-    {/* NODE: CallStmt 224 */
+#line 98 "samples/sample1.ceu"
+    {/* NODE: CallStmt 279 */
 
-#line 80 "samples/sample1.ceu"
+#line 98 "samples/sample1.ceu"
     g_object_unref(((CEU__OPTION___GSOCKETCONNECTION__REF_SOME_assert(_ceu_app, (&((CEU_Handler*)_ceu_org)->connection),__FILE__,__LINE__)->SOME.v)));
-#line 80 "samples/sample1.ceu"
+#line 98 "samples/sample1.ceu"
     }
-#line 80 "samples/sample1.ceu"
-/* CLEAR: Block (80) */
-#line 80 "samples/sample1.ceu"
+#line 98 "samples/sample1.ceu"
+/* CLEAR: Block (98) */
+#line 98 "samples/sample1.ceu"
     if (0) {
 
-#line 80 "samples/sample1.ceu"
+#line 98 "samples/sample1.ceu"
         }   /* opened in "if (0)" */
 }       /* opened in Block_pre */
 }
 
-#line 23 "samples/sample1.ceu"
-    if (((CEU_Handler*)_ceu_org)->__fin_230_2) {
-    /* NODE: Finally 104 */
-/* NODE: Block 103 */
+#line 24 "samples/sample1.ceu"
+    if (((CEU_Handler*)_ceu_org)->__fin_285_2) {
+    /* NODE: Finally 106 */
+/* NODE: Block 105 */
 
-#line 51 "samples/sample1.ceu"
-    {/* NODE: Stmts 102 */
+#line 52 "samples/sample1.ceu"
+    {/* NODE: Stmts 104 */
 
-#line 51 "samples/sample1.ceu"
-    {/* NODE: CallStmt 101 */
+#line 52 "samples/sample1.ceu"
+    {/* NODE: CallStmt 103 */
 
-#line 51 "samples/sample1.ceu"
+#line 52 "samples/sample1.ceu"
     free(((CEU__OPTION__CHAR__REF_SOME_assert(_ceu_app, (&((CEU_Handler*)_ceu_org)->buff),__FILE__,__LINE__)->SOME.v)));
-#line 51 "samples/sample1.ceu"
+#line 52 "samples/sample1.ceu"
     }
-#line 51 "samples/sample1.ceu"
-/* CLEAR: Block (51) */
-#line 51 "samples/sample1.ceu"
+#line 52 "samples/sample1.ceu"
+/* CLEAR: Block (52) */
+#line 52 "samples/sample1.ceu"
     if (0) {
 
-#line 51 "samples/sample1.ceu"
+#line 52 "samples/sample1.ceu"
         }   /* opened in "if (0)" */
 }       /* opened in Block_pre */
 }
 
-#line 23 "samples/sample1.ceu"
-    if (((CEU_Handler*)_ceu_org)->__fin_230_3) {
-    /* NODE: Finally 75 */
-/* NODE: Block 74 */
+#line 24 "samples/sample1.ceu"
+    if (((CEU_Handler*)_ceu_org)->__fin_285_3) {
+    /* NODE: Finally 77 */
+/* NODE: Block 76 */
 
-#line 43 "samples/sample1.ceu"
-    {/* NODE: Stmts 73 */
+#line 44 "samples/sample1.ceu"
+    {/* NODE: Stmts 75 */
 
-#line 43 "samples/sample1.ceu"
-    {/* NODE: CallStmt 72 */
+#line 44 "samples/sample1.ceu"
+    {/* NODE: CallStmt 74 */
 
-#line 43 "samples/sample1.ceu"
+#line 44 "samples/sample1.ceu"
     g_object_unref(((CEU__OPTION___GINETADDRESS__REF_SOME_assert(_ceu_app, (&((CEU_Handler*)_ceu_org)->inetaddr),__FILE__,__LINE__)->SOME.v)));
-#line 43 "samples/sample1.ceu"
+#line 44 "samples/sample1.ceu"
     }
-#line 43 "samples/sample1.ceu"
-/* CLEAR: Block (43) */
-#line 43 "samples/sample1.ceu"
+#line 44 "samples/sample1.ceu"
+/* CLEAR: Block (44) */
+#line 44 "samples/sample1.ceu"
     if (0) {
 
-#line 43 "samples/sample1.ceu"
+#line 44 "samples/sample1.ceu"
         }   /* opened in "if (0)" */
 }       /* opened in Block_pre */
 }
 
-#line 23 "samples/sample1.ceu"
-    if (((CEU_Handler*)_ceu_org)->__fin_230_4) {
-    /* NODE: Finally 52 */
-/* NODE: Block 51 */
+#line 24 "samples/sample1.ceu"
+    if (((CEU_Handler*)_ceu_org)->__fin_285_4) {
+    /* NODE: Finally 54 */
+/* NODE: Block 53 */
 
-#line 36 "samples/sample1.ceu"
-    {/* NODE: Stmts 50 */
+#line 37 "samples/sample1.ceu"
+    {/* NODE: Stmts 52 */
 
-#line 36 "samples/sample1.ceu"
-    {/* NODE: CallStmt 49 */
+#line 37 "samples/sample1.ceu"
+    {/* NODE: CallStmt 51 */
 
-#line 36 "samples/sample1.ceu"
+#line 37 "samples/sample1.ceu"
     g_object_unref(((CEU__OPTION___GSOCKETADDRESS__REF_SOME_assert(_ceu_app, (&((CEU_Handler*)_ceu_org)->sockaddr),__FILE__,__LINE__)->SOME.v)));
-#line 36 "samples/sample1.ceu"
+#line 37 "samples/sample1.ceu"
     }
-#line 36 "samples/sample1.ceu"
-/* CLEAR: Block (36) */
-#line 36 "samples/sample1.ceu"
+#line 37 "samples/sample1.ceu"
+/* CLEAR: Block (37) */
+#line 37 "samples/sample1.ceu"
     if (0) {
 
-#line 36 "samples/sample1.ceu"
+#line 37 "samples/sample1.ceu"
         }   /* opened in "if (0)" */
 }       /* opened in Block_pre */
 }
 
-#line 23 "samples/sample1.ceu"
+#line 24 "samples/sample1.ceu"
     return;
-#line 23 "samples/sample1.ceu"
+#line 24 "samples/sample1.ceu"
         }   /* opened in "if (0)" */
 }       /* opened in Block_pre */
 
-#line 20 "samples/sample1.ceu"
+#line 21 "samples/sample1.ceu"
     }
-#line 20 "samples/sample1.ceu"
-/* CLEAR: Block (20) */
-#line 20 "samples/sample1.ceu"
+#line 21 "samples/sample1.ceu"
+/* CLEAR: Block (21) */
+#line 21 "samples/sample1.ceu"
     if (0) {
 
-#line 20 "samples/sample1.ceu"
+#line 21 "samples/sample1.ceu"
         }   /* opened in "if (0)" */
 }       /* opened in Block_pre */
 
-#line 20 "samples/sample1.ceu"
+#line 21 "samples/sample1.ceu"
     }
-#line 20 "samples/sample1.ceu"
-/* CLEAR: Block (20) */
-#line 20 "samples/sample1.ceu"
+#line 21 "samples/sample1.ceu"
+/* CLEAR: Block (21) */
+#line 21 "samples/sample1.ceu"
     if (0) {
 
-#line 20 "samples/sample1.ceu"
+#line 21 "samples/sample1.ceu"
         }   /* opened in "if (0)" */
 }       /* opened in Block_pre */
 
-#line 20 "samples/sample1.ceu"
+#line 21 "samples/sample1.ceu"
     {
     tceu_evt evt;
              evt.id = CEU_IN__CLEAR;
@@ -8913,7 +9338,16 @@ case Handler_Block__fin_3:;
                   NULL);
 }
 
-#line 20 "samples/sample1.ceu"
+/* LONGJMP
+ * Natural termination: can only be reached from parent traversal or from first 
+ * execution (immediate termination).
+ * Parent: resume the parent traversal from "nxt".
+ * First:  the calling trail will continue normally in sequence.
+ * Return status=2 to distinguish from longjmp from block termination.
+ */
+ceu_longjmp(2, _ceu_stk, _ceu_org, 0, _ceu_org->n);
+
+#line 21 "samples/sample1.ceu"
     return;
     }
 #ifdef CEU_DEBUG
